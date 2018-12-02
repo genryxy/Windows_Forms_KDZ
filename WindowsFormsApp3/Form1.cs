@@ -14,21 +14,17 @@ namespace WindowsFormsApp3
     {
         public int scaleIm = 1;
         private bool isChanged = false;
-        private Point mouseDownPosition = Point.Empty;
-        private Point mouseMovePosition = Point.Empty;
         private static int depthInt;
         private float trS;
         private float bx, cx;
         private float ay;
         private float bc_y;
         private int initialWidth, initialHeight;
-        private int currentWidth, currentHeight;
         const int correlation = 150;
         PointF top_point, right_point, left_point;
         Graphics gr2, g;
         Bitmap bitmap2, btm;
-        Fractal triangle = new Fractal();
-        Random rnd = new Random();
+        Triangle triangle = new Triangle();
 
         public override System.Drawing.Size MinimumSize { get; set; }
         public override System.Drawing.Size MaximumSize { get; set; }
@@ -36,42 +32,27 @@ namespace WindowsFormsApp3
         public Form1()
         {
             InitializeComponent();
-            bitmap2 = new Bitmap(pictureBox2.Width, pictureBox2.Height);
-            pictureBox2.Image = bitmap2;
+            bitmap2 = new Bitmap(pictBoxSave.Width, pictBoxSave.Height);
+            pictBoxSave.Image = bitmap2;
             gr2 = Graphics.FromImage(bitmap2);
 
-            btm = new Bitmap(pictureBox5.Width, pictureBox5.Height);
-            pictureBox5.Image = btm;
+            btm = new Bitmap(pictBoxMain.Width, pictBoxMain.Height);
+            pictBoxMain.Image = btm;
             g = Graphics.FromImage(btm);
 
-            initialWidth = currentWidth = pictureBox5.Width - correlation;
-            initialHeight = currentHeight = pictureBox5.Height - correlation;
+            initialWidth = pictBoxMain.Width - correlation;
+            initialHeight = pictBoxMain.Height - correlation;
 
             MinimumSize = new Size(SystemInformation.VirtualScreen.Width / 2, SystemInformation.VirtualScreen.Height / 2);
             MaximumSize = new Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
             triangle.startColor = Color.Yellow;
             triangle.endColor = Color.Blue;
-            pictureBox3.BackColor = triangle.startColor;
-            pictureBox4.BackColor = triangle.endColor;
+            pictBoxStartCol.BackColor = triangle.startColor;
+            pictBoxEndCol.BackColor = triangle.endColor;
             triangle.sideF = 128f;
 
-            trackBar1.Maximum = 11; // максимум для треугольника Серпинского на trackbare
+            trackBarDepth.Maximum = 11; // максимум для треугольника Серпинского на trackbare
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Form1 newForm1 = new Form1();
-            newForm1.Show();
-            /*Form2 newForm2 = new Form2(newForm1);
-            newForm2.Show();*/
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        int x, y, xC, yC;
-
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (MessageBox.Show("Хотите покинуть меня?", "Печалька :с", MessageBoxButtons.YesNo) == DialogResult.No)
@@ -98,40 +79,26 @@ namespace WindowsFormsApp3
             }
             return colorList[j];
         }
-        private void pictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
-            CalculatePoints(ref top_point, ref right_point, ref left_point);
-
-            var gr = e.Graphics; // если не объявить, то треугольники накладываются друг на друга
-            PointF[] points = { top_point, right_point, left_point };
-            //Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
-            gr.FillPolygon(new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt)), points);
-            DrawTriangle(gr, depthInt, top_point, left_point, right_point);
-        }
-
         private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
         {
             top_point = new PointF((cx + bx) / 2 * scaleIm, ay * scaleIm);
             right_point = new PointF(bx * scaleIm, bc_y * scaleIm);
             left_point = new PointF(cx * scaleIm, bc_y * scaleIm);
         }
-        private void trackBar1_Scroll(object sender, EventArgs e)
+        private void trackBarDepth_Scroll(object sender, EventArgs e)
         {
             if (isChanged)
             {
-                trackBar1.Value = depthInt;
+                trackBarDepth.Value = depthInt;
                 isChanged = false;
             }
-            depthInt = trackBar1.Value;
-            label1.Text = string.Format("Текущее значение глубины: {0}", depthInt);
-            //pictureBox2.Invalidate();
-            //pictureBox2.Image = bitmap2;
-            pictureBox5.Invalidate();
-            pictureBox5.Image = btm;
+            depthInt = trackBarDepth.Value;
+            labelRecur.Text = string.Format("Текущее значение глубины: {0}", depthInt);
+            pictBoxMain.Invalidate();
+            pictBoxMain.Image = btm;
         }
 
-        private void pictureBox5_Paint(object sender, PaintEventArgs e)
+        private void pictBoxMain_Paint(object sender, PaintEventArgs e)
         {
             CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
             CalculatePoints(ref top_point, ref right_point, ref left_point);
@@ -141,7 +108,7 @@ namespace WindowsFormsApp3
             Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
             gr.FillPolygon(color, points);
             DrawTriangle(gr, depthInt, top_point, left_point, right_point);
-        }       
+        }
 
         // Нарисуем треугольник между точками.
         private void DrawTriangle(Graphics gr, int level, PointF top_point, PointF left_point, PointF right_point)
@@ -150,21 +117,19 @@ namespace WindowsFormsApp3
             {
                 Color colorCol = Gradient(triangle.startColor, triangle.endColor, depthInt + 2, level);
                 Brush colorBrush = new SolidBrush(colorCol);
-                // Посмотрим, остановимся ли мы.
                 if (level == 0)
                 {
-                    // Заполните треугольник.
                     PointF[] points = { top_point, right_point, left_point };
                     gr.FillPolygon(new SolidBrush(triangle.startColor), points);
                 }
                 else
                 {
-                    // Найти граничные точки.
+                    // Найти граничные точки треугольника
                     PointF left_mid = new PointF((top_point.X + left_point.X) / 2f, (top_point.Y + left_point.Y) / 2f);
                     PointF right_mid = new PointF((top_point.X + right_point.X) / 2f, (top_point.Y + right_point.Y) / 2f);
                     PointF bottom_mid = new PointF((left_point.X + right_point.X) / 2f, (left_point.Y + right_point.Y) / 2f);
 
-                    // Рекурсивно рисуем меньшие треугольники.
+                    // Рекурсивно рисуем три меньших треугольника
                     DrawTriangle(gr, level - 1, right_mid, bottom_mid, right_point);
                     DrawTriangle(gr, level - 1, left_mid, left_point, bottom_mid);
                     DrawTriangle(gr, level - 1, top_point, left_mid, right_mid);
@@ -176,6 +141,7 @@ namespace WindowsFormsApp3
                 MessageBox.Show($"Невозможно построить! {err.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void CalculateInitialCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
         {
             trS = triangle.sideF;
@@ -184,9 +150,9 @@ namespace WindowsFormsApp3
             ay = 1;
             bc_y = ay + (float)Math.Sqrt(trS * trS - trS * trS / 4);
         }
-        private void button3_Click(object sender, EventArgs e)
+        private void buttonSave_Click(object sender, EventArgs e)
         {
-            if (pictureBox5.Image != null)
+            if (pictBoxMain.Image != null)
             {
                 SaveFileDialog saveFile = new SaveFileDialog();
                 saveFile.Title = "Сохранить изображение как ...";
@@ -197,17 +163,16 @@ namespace WindowsFormsApp3
                 {
                     try
                     {
-                        if (pictureBox2.Image != null)
+                        if (pictBoxSave.Image != null)
                         {
                             CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
                             CalculatePoints(ref top_point, ref right_point, ref left_point);
-
                             PointF[] points = { top_point, right_point, left_point };
                             Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
                             gr2.FillPolygon(color, points);
                             DrawTriangle(gr2, depthInt, top_point, left_point, right_point);
                             bitmap2.Save(saveFile.FileName);
-                            gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor), 0, 0, pictureBox2.Width, pictureBox2.Height);
+                            gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor), 0, 0, pictBoxSave.Width, pictBoxSave.Height);
                         }
                     }
                     catch (ArgumentNullException err)
@@ -218,68 +183,43 @@ namespace WindowsFormsApp3
             }
         }
 
-        private void trackBar2_Scroll(object sender, EventArgs e)
-        {           
-            label3.Text = String.Format("Текущее значение масштаба: {0}", trackBar2.Value);
-            scaleIm = trackBar2.Value;        
+        private void trackBarScale_Scroll(object sender, EventArgs e)
+        {
+            labelScale.Text = String.Format("Текущее значение масштаба: {0}", trackBarScale.Value);
+            scaleIm = trackBarScale.Value;
             btm = new Bitmap(initialWidth * (1 + scaleIm / 3), initialHeight * (1 + scaleIm / 3));
-            pictureBox5.Image = btm;
-            pictureBox5.Invalidate();
-            //Form2 newForm2 = new Form2();
-            //newForm2.Show();
+            pictBoxMain.Image = btm;
+            pictBoxMain.Invalidate();
         }
         string colorNotSelected = "Вы не выбрали цвет! \nYou didn't select the color!";
-        private void button6_Click(object sender, EventArgs e)
+        private void buttonStartCol_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                pictureBox3.BackColor = colorDialog1.Color;
-                //label2.Visible = false;
-                //pictureBox3.Visible = true;
-                triangle.startColor = pictureBox3.BackColor;
-                pictureBox5.Image = btm;
-                pictureBox5.Invalidate();
+                pictBoxStartCol.BackColor = colorDialog1.Color;
+                //labelStartCol.Visible = false;
+                //pictBoxStartCol.Visible = true;
+                triangle.startColor = pictBoxStartCol.BackColor;
+                pictBoxMain.Image = btm;
+                pictBoxMain.Invalidate();
             }
             else
                 MessageBox.Show(colorNotSelected);
         }
-        private void button7_Click(object sender, EventArgs e)
+        private void buttonEndCol_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
-                pictureBox4.BackColor = colorDialog1.Color;
-                //label4.Visible = false;
-                //pictureBox4.Visible = true;
-                triangle.endColor = pictureBox4.BackColor;
-                pictureBox5.Image = btm;
-                pictureBox5.Invalidate();
+                pictBoxEndCol.BackColor = colorDialog1.Color;
+                //labelEndCol.Visible = false;
+                //pictBoxEndCol.Visible = true;
+                triangle.endColor = pictBoxEndCol.BackColor;
+                pictBoxMain.Image = btm;
+                pictBoxMain.Invalidate();
             }
             else
                 MessageBox.Show(colorNotSelected);
         }
-
-        private void button1_MouseUp(object sender, MouseEventArgs e)
-        {
-            Button button = new Button();
-            int dx = e.X - xC;
-            int dy = e.Y - yC;
-            button1.Location = new Point(x + dx, y + dy);
-        }
-
-        private void button1_MouseDown(object sender, MouseEventArgs e)
-        {
-            Button button = (Button)sender;
-            x = button.Location.X;
-            y = button.Location.Y;
-            xC = e.X;
-            yC = e.Y;
-        }
-    }
-    public class Fractal
-    {
-        public Color startColor, endColor;
-        protected internal float sideF;
-        public virtual void Draw() { }
     }
 }
 /*
@@ -299,7 +239,8 @@ namespace WindowsFormsApp3
             {
                 pictureBox1.Image = Image.FromFile(openFile.FileName);  
             }
-        }*/
+        }
+*/
 
 // ввод значения глубины фрактала
 /*
@@ -316,4 +257,32 @@ namespace WindowsFormsApp3
            g = rnd.Next(256),
            b = rnd.Next(256);
        BackColor = Color.FromArgb(r, g, b);
+ */
+
+/* создание новой формы
+     private void button1_Click(object sender, EventArgs e)
+        {
+            Form1 newForm1 = new Form1();
+            newForm1.Show();
+            Form2 newForm2 = new Form2(newForm1);
+            newForm2.Show();
+        }
+ */
+/* двигать кнопку в каком-либо направлении
+   private void button1_MouseUp(object sender, MouseEventArgs e)
+       {
+           Button button = new Button();
+           int dx = e.X - xC;
+           int dy = e.Y - yC;
+           button1.Location = new Point(x + dx, y + dy);
+       }
+
+       private void button1_MouseDown(object sender, MouseEventArgs e)
+       {
+           Button button = (Button)sender;
+           x = button.Location.X;
+           y = button.Location.Y;
+           xC = e.X;
+           yC = e.Y;
+       }
  */
