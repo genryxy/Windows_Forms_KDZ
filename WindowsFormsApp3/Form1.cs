@@ -1,29 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WindowsFormsApp3
 {
     public partial class Form1 : Form
     {
-        public int scaleIm = 1;
+        public static int scaleIm = 1;
         private bool isChanged = false;
-        private static int depthInt;
-        private float trS;
-        private float bx, cx;
-        private float ay;
-        private float bc_y;
         private int initialWidth, initialHeight;
-        const int correlation = 150;
-        PointF top_point, right_point, left_point;
+        private const int correlation = 150;
+
         Graphics gr2, g;
         Bitmap bitmap2, btm;
+
         Triangle triangle = new Triangle();
 
         public override System.Drawing.Size MinimumSize { get; set; }
@@ -49,7 +39,7 @@ namespace WindowsFormsApp3
             triangle.endColor = Color.Blue;
             pictBoxStartCol.BackColor = triangle.startColor;
             pictBoxEndCol.BackColor = triangle.endColor;
-            triangle.sideF = 128f;
+            triangle.SideF = 128f;
 
             trackBarDepth.Maximum = 11; // максимум для треугольника Серпинского на trackbare
         }
@@ -59,97 +49,28 @@ namespace WindowsFormsApp3
                 e.Cancel = true;
 
         }
-        // расчёт градиента
-        private Color Gradient(Color startColor, Color endColor, int size, int j)
-        {
-            int rMax = startColor.R;
-            int rMin = endColor.R;
-            int gMax = startColor.G;
-            int gMin = endColor.G;
-            int bMax = startColor.B;
-            int bMin = endColor.B;
-
-            var colorList = new List<Color>();
-            for (int i = 0; i < size; i++)
-            {
-                var rAverage = rMin + (rMax - rMin) * i / size;
-                var gAverage = gMin + (gMax - gMin) * i / size;
-                var bAverage = bMin + (bMax - bMin) * i / size;
-                colorList.Add(Color.FromArgb(rAverage, gAverage, bAverage));
-            }
-            return colorList[j];
-        }
-        private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
-        {
-            top_point = new PointF((cx + bx) / 2 * scaleIm, ay * scaleIm);
-            right_point = new PointF(bx * scaleIm, bc_y * scaleIm);
-            left_point = new PointF(cx * scaleIm, bc_y * scaleIm);
-        }
+        
         private void trackBarDepth_Scroll(object sender, EventArgs e)
         {
             if (isChanged)
             {
-                trackBarDepth.Value = depthInt;
+                trackBarDepth.Value = triangle.DepthInt;
                 isChanged = false;
             }
-            depthInt = trackBarDepth.Value;
-            labelRecur.Text = string.Format("Текущее значение глубины: {0}", depthInt);
+            triangle.DepthInt = trackBarDepth.Value;
+            labelRecur.Text = string.Format("Текущее значение глубины: {0}", triangle.DepthInt);
             pictBoxMain.Invalidate();
             pictBoxMain.Image = btm;
-        }
+        }        
 
         private void pictBoxMain_Paint(object sender, PaintEventArgs e)
         {
-            CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
-            CalculatePoints(ref top_point, ref right_point, ref left_point);
-
+            triangle.CalculateInitialCoordinates();
+            triangle.CalculatePoints();
             var gr = e.Graphics; // если не объявить, то треугольники накладываются друг на друга
-            PointF[] points = { top_point, right_point, left_point };
-            Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
-            gr.FillPolygon(color, points);
-            DrawTriangle(gr, depthInt, top_point, left_point, right_point);
+            triangle.Draw(gr);
         }
-
-        // Нарисуем треугольник между точками.
-        private void DrawTriangle(Graphics gr, int level, PointF top_point, PointF left_point, PointF right_point)
-        {
-            try
-            {
-                Color colorCol = Gradient(triangle.startColor, triangle.endColor, depthInt + 2, level);
-                Brush colorBrush = new SolidBrush(colorCol);
-                if (level == 0)
-                {
-                    PointF[] points = { top_point, right_point, left_point };
-                    gr.FillPolygon(new SolidBrush(triangle.startColor), points);
-                }
-                else
-                {
-                    // Найти граничные точки треугольника
-                    PointF left_mid = new PointF((top_point.X + left_point.X) / 2f, (top_point.Y + left_point.Y) / 2f);
-                    PointF right_mid = new PointF((top_point.X + right_point.X) / 2f, (top_point.Y + right_point.Y) / 2f);
-                    PointF bottom_mid = new PointF((left_point.X + right_point.X) / 2f, (left_point.Y + right_point.Y) / 2f);
-
-                    // Рекурсивно рисуем три меньших треугольника
-                    DrawTriangle(gr, level - 1, right_mid, bottom_mid, right_point);
-                    DrawTriangle(gr, level - 1, left_mid, left_point, bottom_mid);
-                    DrawTriangle(gr, level - 1, top_point, left_mid, right_mid);
-                    gr.FillPolygon(colorBrush, new PointF[] { left_mid, right_mid, bottom_mid });
-                }
-            }
-            catch (StackOverflowException err)
-            {
-                MessageBox.Show($"Невозможно построить! {err.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void CalculateInitialCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
-        {
-            trS = triangle.sideF;
-            bx = 5;
-            cx = bx + trS;
-            ay = 1;
-            bc_y = ay + (float)Math.Sqrt(trS * trS - trS * trS / 4);
-        }
+        
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (pictBoxMain.Image != null)
@@ -165,12 +86,9 @@ namespace WindowsFormsApp3
                     {
                         if (pictBoxSave.Image != null)
                         {
-                            CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
-                            CalculatePoints(ref top_point, ref right_point, ref left_point);
-                            PointF[] points = { top_point, right_point, left_point };
-                            Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
-                            gr2.FillPolygon(color, points);
-                            DrawTriangle(gr2, depthInt, top_point, left_point, right_point);
+                            triangle.CalculateInitialCoordinates();
+                            triangle.CalculatePoints();
+                            triangle.Draw(gr2);
                             bitmap2.Save(saveFile.FileName);
                             gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor), 0, 0, pictBoxSave.Width, pictBoxSave.Height);
                         }
@@ -197,8 +115,6 @@ namespace WindowsFormsApp3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxStartCol.BackColor = colorDialog1.Color;
-                //labelStartCol.Visible = false;
-                //pictBoxStartCol.Visible = true;
                 triangle.startColor = pictBoxStartCol.BackColor;
                 pictBoxMain.Image = btm;
                 pictBoxMain.Invalidate();
@@ -211,8 +127,6 @@ namespace WindowsFormsApp3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxEndCol.BackColor = colorDialog1.Color;
-                //labelEndCol.Visible = false;
-                //pictBoxEndCol.Visible = true;
                 triangle.endColor = pictBoxEndCol.BackColor;
                 pictBoxMain.Image = btm;
                 pictBoxMain.Invalidate();
@@ -286,3 +200,127 @@ namespace WindowsFormsApp3
            yC = e.Y;
        }
  */
+// Нарисуем треугольник между точками.
+/*Co
+private void DrawTriangle(Graphics gr, int level, PointF top_point, PointF left_point, PointF right_point)
+{
+    try
+    {
+        Color colorCol = Gradient(triangle.startColor, triangle.endColor, depthInt + 2, level);
+        Brush colorBrush = new SolidBrush(colorCol);
+        if (level == 0)
+        {
+            PointF[] points = { top_point, right_point, left_point };
+            gr.FillPolygon(new SolidBrush(triangle.startColor), points);
+        }
+        else
+        {
+            // Найти граничные точки треугольника
+            PointF left_mid = new PointF((top_point.X + left_point.X) / 2f, (top_point.Y + left_point.Y) / 2f);
+            PointF right_mid = new PointF((top_point.X + right_point.X) / 2f, (top_point.Y + right_point.Y) / 2f);
+            PointF bottom_mid = new PointF((left_point.X + right_point.X) / 2f, (left_point.Y + right_point.Y) / 2f);
+
+            // Рекурсивно рисуем три меньших треугольника
+            DrawTriangle(gr, level - 1, right_mid, bottom_mid, right_point);
+            DrawTriangle(gr, level - 1, left_mid, left_point, bottom_mid);
+            DrawTriangle(gr, level - 1, top_point, left_mid, right_mid);
+            gr.FillPolygon(colorBrush, new PointF[] { left_mid, right_mid, bottom_mid });
+        }
+    }
+    catch (StackOverflowException err)
+    {
+        MessageBox.Show($"Невозможно построить! {err.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
+private void CalculateInitialCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
+{
+    trS = triangle.sideF;
+    bx = 5;
+    cx = bx + trS;
+    ay = 1;
+    bc_y = ay + (float)Math.Sqrt(trS * trS - trS * trS / 4);
+} */
+/*private void buttonSave_Click(object sender, EventArgs e)
+{
+    if (pictBoxMain.Image != null)
+    {
+        SaveFileDialog saveFile = new SaveFileDialog();
+        saveFile.Title = "Сохранить изображение как ...";
+        saveFile.OverwritePrompt = true; // существует ли указанное имя
+        saveFile.CheckPathExists = true; // существует ли указанный путь
+        saveFile.Filter = "Image Files(*.JPG)|*.JPG|Image Files(*.BMP)|*.BMP|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+        if (saveFile.ShowDialog() == DialogResult.OK)
+        {
+            try
+            {
+                if (pictBoxSave.Image != null)
+                {
+                    CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
+                    CalculatePoints(ref top_point, ref right_point, ref left_point);
+                    PointF[] points = { top_point, right_point, left_point };
+                    Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
+                    gr2.FillPolygon(color, points);
+                    DrawTriangle(gr2, depthInt, top_point, left_point, right_point);
+                    bitmap2.Save(saveFile.FileName);
+                    gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor), 0, 0, pictBoxSave.Width, pictBoxSave.Height);
+                }
+            }
+            catch (ArgumentNullException err)
+            {
+                MessageBox.Show($"Невозможно сохранить! {err.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+    }
+}*/
+
+/*private void pictBoxMain_Paint(object sender, PaintEventArgs e)
+{
+    CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
+    CalculatePoints(ref top_point, ref right_point, ref left_point);
+
+    var gr = e.Graphics; // если не объявить, то треугольники накладываются друг на друга
+    PointF[] points = { top_point, right_point, left_point };
+    Brush color = new SolidBrush(Gradient(triangle.startColor, triangle.endColor, depthInt + 2, depthInt));
+    gr.FillPolygon(color, points);
+    DrawTriangle(gr, depthInt, top_point, left_point, right_point);
+    //triangle.Draw(gr, depthInt, top_point, left_point, right_point);
+}*/
+// расчёт градиента
+/*private Color Gradient(Color startColor, Color endColor, int size, int j)
+{
+    int rMax = startColor.R;
+    int rMin = endColor.R;
+    int gMax = startColor.G;
+    int gMin = endColor.G;
+    int bMax = startColor.B;
+    int bMin = endColor.B;
+
+    var colorList = new List<Color>();
+    for (int i = 0; i < size; i++)
+    {
+        var rAverage = rMin + (rMax - rMin) * i / size;
+        var gAverage = gMin + (gMax - gMin) * i / size;
+        var bAverage = bMin + (bMax - bMin) * i / size;
+        colorList.Add(Color.FromArgb(rAverage, gAverage, bAverage));
+    }
+    return colorList[j];
+}*/
+/*private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
+{
+    top_point = new PointF((cx + bx) / 2 * scaleIm, ay * scaleIm);
+    right_point = new PointF(bx * scaleIm, bc_y * scaleIm);
+    left_point = new PointF(cx * scaleIm, bc_y * scaleIm);
+}*/
+/*private void trackBarDepth_Scroll(object sender, EventArgs e)
+{
+    if (isChanged)
+    {
+        trackBarDepth.Value = depthInt;
+        isChanged = false;
+    }
+    depthInt = trackBarDepth.Value;
+    labelRecur.Text = string.Format("Текущее значение глубины: {0}", depthInt);
+    pictBoxMain.Invalidate();
+    pictBoxMain.Image = btm;
+}*/

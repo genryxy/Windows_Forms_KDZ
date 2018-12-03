@@ -10,7 +10,8 @@ namespace WindowsFormsApp3
     abstract class Fractal
     {
         public Color startColor, endColor;
-        internal float sideF;
-        public virtual void Draw() { }
+        abstract public float SideF { get; set; }
+
+        protected abstract void DrawTriangle(Graphics gr, int level, PointF top_point, PointF left_point, PointF right_point);
     }
 }

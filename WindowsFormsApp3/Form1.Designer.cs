@@ -205,7 +205,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pictBoxSave.Location = new System.Drawing.Point(32, 12);
             this.pictBoxSave.Name = "pictBoxSave";
-            this.pictBoxSave.Size = new System.Drawing.Size(1062, 701);
+            this.pictBoxSave.Size = new System.Drawing.Size(941, 701);
             this.pictBoxSave.TabIndex = 24;
             this.pictBoxSave.TabStop = false;
             // 
