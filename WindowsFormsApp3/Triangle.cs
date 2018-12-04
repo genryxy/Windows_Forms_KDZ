@@ -6,7 +6,7 @@ namespace WindowsFormsApp3
 {
     class Triangle : Fractal
     {
-        public const int correlation = 150;
+        public const int maxDepthTrDefault = 12;
 
         private int maxDepthInt = 12;
         private float bx, cx;
@@ -40,13 +40,13 @@ namespace WindowsFormsApp3
             CalculatePoints(ref top_point, ref right_point, ref left_point);
         }
         
-        private void DrawTriangle(Graphics gr, int level, PointF top_point, PointF left_point, PointF right_point)
+        private void DrawTriangle(Graphics gr, int depth, PointF top_point, PointF left_point, PointF right_point)
         {
             try
             {
-                Color colorCol = CountGradient.Gradient(StartColor, EndColor, DepthInt + 2, level);
+                Color colorCol = CountGradient.Gradient(StartColor, EndColor, DepthInt + 2, depth);
                 Brush colorBrush = new SolidBrush(colorCol);
-                if (level == 0)
+                if (depth == 0)
                 {
                     PointF[] points = { top_point, right_point, left_point };
                     gr.FillPolygon(new SolidBrush(StartColor), points);
@@ -59,9 +59,9 @@ namespace WindowsFormsApp3
                     PointF bottom_mid = new PointF((left_point.X + right_point.X) / 2f, (left_point.Y + right_point.Y) / 2f);
                     
                     // Recursively draw three smaller triangles
-                    DrawTriangle(gr, level - 1, right_mid, bottom_mid, right_point);
-                    DrawTriangle(gr, level - 1, left_mid, left_point, bottom_mid);
-                    DrawTriangle(gr, level - 1, top_point, left_mid, right_mid);
+                    DrawTriangle(gr, depth - 1, right_mid, bottom_mid, right_point);
+                    DrawTriangle(gr, depth - 1, left_mid, left_point, bottom_mid);
+                    DrawTriangle(gr, depth - 1, top_point, left_mid, right_mid);
                     gr.FillPolygon(colorBrush, new PointF[] { left_mid, right_mid, bottom_mid });
                 }
             }

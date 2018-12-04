@@ -5,7 +5,7 @@ namespace WindowsFormsApp3
 {
     static class CountGradient
     {
-        static public Color Gradient(Color startColor, Color endColor, int size, int j)
+        static public Color Gradient(Color startColor, Color endColor, int size, int numberColor)
         {
             int rMax = startColor.R;
             int rMin = endColor.R;
@@ -22,7 +22,7 @@ namespace WindowsFormsApp3
                 var bAverage = bMin + (bMax - bMin) * i / size;
                 colorList.Add(Color.FromArgb(rAverage, gAverage, bAverage));
             }
-            return colorList[j];
+            return colorList[numberColor];
         }
     }
 }

@@ -60,7 +60,7 @@
             this.labelRecur.AutoSize = true;
             this.labelRecur.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.labelRecur.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelRecur.Location = new System.Drawing.Point(951, 157);
+            this.labelRecur.Location = new System.Drawing.Point(950, 157);
             this.labelRecur.Name = "labelRecur";
             this.labelRecur.Size = new System.Drawing.Size(133, 18);
             this.labelRecur.TabIndex = 2;
@@ -70,7 +70,7 @@
             // 
             this.trackBarDepth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarDepth.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.trackBarDepth.Location = new System.Drawing.Point(901, 178);
+            this.trackBarDepth.Location = new System.Drawing.Point(900, 178);
             this.trackBarDepth.Maximum = 13;
             this.trackBarDepth.Name = "trackBarDepth";
             this.trackBarDepth.Size = new System.Drawing.Size(350, 56);
@@ -80,7 +80,7 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(1043, 492);
+            this.button3.Location = new System.Drawing.Point(1042, 492);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(152, 37);
             this.button3.TabIndex = 8;
@@ -92,7 +92,7 @@
             // 
             this.trackBarScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.trackBarScale.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.trackBarScale.Location = new System.Drawing.Point(901, 258);
+            this.trackBarScale.Location = new System.Drawing.Point(900, 258);
             this.trackBarScale.Maximum = 5;
             this.trackBarScale.Minimum = 1;
             this.trackBarScale.Name = "trackBarScale";
@@ -107,7 +107,7 @@
             this.labelScale.AutoSize = true;
             this.labelScale.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.labelScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelScale.Location = new System.Drawing.Point(951, 237);
+            this.labelScale.Location = new System.Drawing.Point(950, 237);
             this.labelScale.Name = "labelScale";
             this.labelScale.Size = new System.Drawing.Size(72, 18);
             this.labelScale.TabIndex = 12;
@@ -123,10 +123,10 @@
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.pictBoxMain);
-            this.panel1.Location = new System.Drawing.Point(72, 52);
+            this.panel1.Location = new System.Drawing.Point(71, 24);
             this.panel1.MinimumSize = new System.Drawing.Size(300, 350);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(603, 538);
+            this.panel1.Size = new System.Drawing.Size(602, 543);
             this.panel1.TabIndex = 16;
             // 
             // pictBoxMain
@@ -135,7 +135,7 @@
             this.pictBoxMain.Location = new System.Drawing.Point(50, 15);
             this.pictBoxMain.MinimumSize = new System.Drawing.Size(200, 200);
             this.pictBoxMain.Name = "pictBoxMain";
-            this.pictBoxMain.Size = new System.Drawing.Size(500, 500);
+            this.pictBoxMain.Size = new System.Drawing.Size(512, 512);
             this.pictBoxMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictBoxMain.TabIndex = 0;
             this.pictBoxMain.TabStop = false;
@@ -144,7 +144,7 @@
             // buttonStartCol
             // 
             this.buttonStartCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonStartCol.Location = new System.Drawing.Point(954, 357);
+            this.buttonStartCol.Location = new System.Drawing.Point(953, 357);
             this.buttonStartCol.Name = "buttonStartCol";
             this.buttonStartCol.Size = new System.Drawing.Size(194, 40);
             this.buttonStartCol.TabIndex = 17;
@@ -157,7 +157,7 @@
             this.labelStartCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelStartCol.AutoSize = true;
             this.labelStartCol.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.labelStartCol.Location = new System.Drawing.Point(1154, 337);
+            this.labelStartCol.Location = new System.Drawing.Point(1153, 337);
             this.labelStartCol.Name = "labelStartCol";
             this.labelStartCol.Size = new System.Drawing.Size(69, 17);
             this.labelStartCol.TabIndex = 18;
@@ -166,7 +166,7 @@
             // pictBoxStartCol
             // 
             this.pictBoxStartCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictBoxStartCol.Location = new System.Drawing.Point(1157, 357);
+            this.pictBoxStartCol.Location = new System.Drawing.Point(1156, 357);
             this.pictBoxStartCol.Name = "pictBoxStartCol";
             this.pictBoxStartCol.Size = new System.Drawing.Size(77, 33);
             this.pictBoxStartCol.TabIndex = 19;
@@ -175,7 +175,7 @@
             // button7
             // 
             this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.Location = new System.Drawing.Point(954, 424);
+            this.button7.Location = new System.Drawing.Point(953, 424);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(194, 40);
             this.button7.TabIndex = 20;
@@ -188,7 +188,7 @@
             this.labelEndCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelEndCol.AutoSize = true;
             this.labelEndCol.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.labelEndCol.Location = new System.Drawing.Point(1160, 411);
+            this.labelEndCol.Location = new System.Drawing.Point(1159, 411);
             this.labelEndCol.Name = "labelEndCol";
             this.labelEndCol.Size = new System.Drawing.Size(65, 17);
             this.labelEndCol.TabIndex = 21;
@@ -197,7 +197,7 @@
             // pictBoxEndCol
             // 
             this.pictBoxEndCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictBoxEndCol.Location = new System.Drawing.Point(1160, 431);
+            this.pictBoxEndCol.Location = new System.Drawing.Point(1159, 431);
             this.pictBoxEndCol.Name = "pictBoxEndCol";
             this.pictBoxEndCol.Size = new System.Drawing.Size(77, 33);
             this.pictBoxEndCol.TabIndex = 22;
@@ -209,7 +209,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.pictBoxSave.Location = new System.Drawing.Point(32, 12);
             this.pictBoxSave.Name = "pictBoxSave";
-            this.pictBoxSave.Size = new System.Drawing.Size(941, 704);
+            this.pictBoxSave.Size = new System.Drawing.Size(700, 600);
             this.pictBoxSave.TabIndex = 24;
             this.pictBoxSave.TabStop = false;
             // 
@@ -218,9 +218,9 @@
             this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(940, 52);
+            this.comboBox1.Location = new System.Drawing.Point(939, 52);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(255, 30);
+            this.comboBox1.Size = new System.Drawing.Size(268, 30);
             this.comboBox1.TabIndex = 25;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox1_KeyPress);
@@ -230,7 +230,7 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(969, 24);
+            this.label1.Location = new System.Drawing.Point(968, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(196, 25);
             this.label1.TabIndex = 26;
@@ -241,7 +241,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1263, 718);
+            this.ClientSize = new System.Drawing.Size(1262, 617);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.panel1);
