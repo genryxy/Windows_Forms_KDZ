@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -9,11 +10,10 @@ namespace WindowsFormsApp3
         public static int scaleIm = 1;
         private bool isChanged = false;
         private int initialWidth, initialHeight;
-        private const int correlation = 150;
+        private string colorNotSelected = "Вы не выбрали цвет!";
 
+        Bitmap btm, btm2;
         Graphics gr2, g;
-        Bitmap bitmap2, btm;
-
         Triangle triangle = new Triangle();
 
         public override System.Drawing.Size MinimumSize { get; set; }
@@ -22,34 +22,41 @@ namespace WindowsFormsApp3
         public Form1()
         {
             InitializeComponent();
-            bitmap2 = new Bitmap(pictBoxSave.Width, pictBoxSave.Height);
-            pictBoxSave.Image = bitmap2;
-            gr2 = Graphics.FromImage(bitmap2);
+            InitializeValues();
+        }
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Хотите покинуть меня?",
+                "Печалька :с", MessageBoxButtons.YesNo) == DialogResult.No)
+                e.Cancel = true;
+
+        }
+
+        private void InitializeValues()
+        {
+            triangle.InitializeTriangle();
+            trackBarDepth.Maximum = triangle.MaxDepthInt; // maximum depth of triangle on the trackbar
+            comboBox1.Items.AddRange(new string[] {"Треугольник Серпинского",
+            "Т-квадрат", "С-Кривая Леви"});
+            comboBox1.SelectedItem = comboBox1.Items[0];
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDown;
 
             btm = new Bitmap(pictBoxMain.Width, pictBoxMain.Height);
             pictBoxMain.Image = btm;
             g = Graphics.FromImage(btm);
+            btm2 = new Bitmap(pictBoxSave.Width, pictBoxSave.Height);
+            pictBoxSave.Image = btm2;
+            gr2 = Graphics.FromImage(btm2);
 
-            initialWidth = pictBoxMain.Width - correlation;
-            initialHeight = pictBoxMain.Height - correlation;
-
-            MinimumSize = new Size(SystemInformation.VirtualScreen.Width / 2, SystemInformation.VirtualScreen.Height / 2);
-            MaximumSize = new Size(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
-            triangle.startColor = Color.Yellow;
-            triangle.endColor = Color.Blue;
-            pictBoxStartCol.BackColor = triangle.startColor;
-            pictBoxEndCol.BackColor = triangle.endColor;
-            triangle.SideF = 128f;
-
-            trackBarDepth.Maximum = 11; // максимум для треугольника Серпинского на trackbare
+            initialWidth = pictBoxMain.Width - Triangle.correlation;
+            initialHeight = pictBoxMain.Height - Triangle.correlation;
+            MinimumSize = new Size(SystemInformation.VirtualScreen.Width / 2,
+                SystemInformation.VirtualScreen.Height / 2);
+            MaximumSize = new Size(SystemInformation.VirtualScreen.Width,
+                SystemInformation.VirtualScreen.Height);
+            pictBoxStartCol.BackColor = triangle.StartColor;
+            pictBoxEndCol.BackColor = triangle.EndColor;
         }
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (MessageBox.Show("Хотите покинуть меня?", "Печалька :с", MessageBoxButtons.YesNo) == DialogResult.No)
-                e.Cancel = true;
-
-        }
-        
         private void trackBarDepth_Scroll(object sender, EventArgs e)
         {
             if (isChanged)
@@ -57,29 +64,46 @@ namespace WindowsFormsApp3
                 trackBarDepth.Value = triangle.DepthInt;
                 isChanged = false;
             }
+            TrackBarChange(false);
+        }
+        private void pictBoxMain_Paint(object sender, PaintEventArgs e)
+        {
+            var timer = Stopwatch.StartNew();
+            timer.Start();
+            triangle.CalculateInitialCoordinates();
+            triangle.CalculatePoints();
+            // if don't declare it, then the triangles are superimposed on each other
+            var gr = e.Graphics;
+            triangle.Draw(gr);
+            if (timer.Elapsed >= new TimeSpan(0, 0, 0, 0, 700))
+            {
+                MessageBox.Show($"Фрактал рисовался слишком долго: " +
+                    $"{String.Format("{0:0.00} c", ((float)timer.ElapsedMilliseconds) / 1000)}" +
+                    $"\nМаксимальная глубина рекурсии будет уменьшена.", "Лимит времени!");
+                triangle.MaxDepthInt -= 2;
+                TrackBarChange(true);
+            }
+            timer.Reset();
+        }
+        private void TrackBarChange(bool changed)
+        {
+            if (changed)
+                trackBarDepth.Maximum = triangle.MaxDepthInt;
             triangle.DepthInt = trackBarDepth.Value;
             labelRecur.Text = string.Format("Текущее значение глубины: {0}", triangle.DepthInt);
             pictBoxMain.Invalidate();
             pictBoxMain.Image = btm;
-        }        
-
-        private void pictBoxMain_Paint(object sender, PaintEventArgs e)
-        {
-            triangle.CalculateInitialCoordinates();
-            triangle.CalculatePoints();
-            var gr = e.Graphics; // если не объявить, то треугольники накладываются друг на друга
-            triangle.Draw(gr);
         }
-        
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (pictBoxMain.Image != null)
             {
                 SaveFileDialog saveFile = new SaveFileDialog();
                 saveFile.Title = "Сохранить изображение как ...";
-                saveFile.OverwritePrompt = true; // существует ли указанное имя
-                saveFile.CheckPathExists = true; // существует ли указанный путь
-                saveFile.Filter = "Image Files(*.JPG)|*.JPG|Image Files(*.BMP)|*.BMP|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                saveFile.OverwritePrompt = true; // does the name exist
+                saveFile.CheckPathExists = true; // does the path exist
+                saveFile.Filter = "Image Files(*.JPG)|*.JPG|Image Files(*.BMP)|*.BMP|" +
+                    "Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     try
@@ -87,18 +111,31 @@ namespace WindowsFormsApp3
                         if (pictBoxSave.Image != null)
                         {
                             triangle.CalculateInitialCoordinates();
-                            triangle.CalculatePoints();
+                            triangle.CalculatePoints(); 
                             triangle.Draw(gr2);
-                            bitmap2.Save(saveFile.FileName);
-                            gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor), 0, 0, pictBoxSave.Width, pictBoxSave.Height);
+                            btm2.Save(saveFile.FileName);
+                            gr2.FillRectangle(new SolidBrush(Form1.DefaultBackColor),
+                                0, 0, pictBoxSave.Width, pictBoxSave.Height);
                         }
                     }
                     catch (ArgumentNullException err)
                     {
-                        MessageBox.Show($"Невозможно сохранить! {err.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Невозможно сохранить! {err.Message}",
+                            "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
+        }    
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string pickedFractal = comboBox1.SelectedItem.ToString();
+        }
+
+        private void comboBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // to prevent entry of incorrect values
+            e.Handled = true;
         }
 
         private void trackBarScale_Scroll(object sender, EventArgs e)
@@ -109,13 +146,13 @@ namespace WindowsFormsApp3
             pictBoxMain.Image = btm;
             pictBoxMain.Invalidate();
         }
-        string colorNotSelected = "Вы не выбрали цвет! \nYou didn't select the color!";
+
         private void buttonStartCol_Click(object sender, EventArgs e)
         {
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxStartCol.BackColor = colorDialog1.Color;
-                triangle.startColor = pictBoxStartCol.BackColor;
+                triangle.StartColor = pictBoxStartCol.BackColor;
                 pictBoxMain.Image = btm;
                 pictBoxMain.Invalidate();
             }
@@ -127,7 +164,7 @@ namespace WindowsFormsApp3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxEndCol.BackColor = colorDialog1.Color;
-                triangle.endColor = pictBoxEndCol.BackColor;
+                triangle.EndColor = pictBoxEndCol.BackColor;
                 pictBoxMain.Image = btm;
                 pictBoxMain.Invalidate();
             }
