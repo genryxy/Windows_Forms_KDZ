@@ -11,7 +11,7 @@ namespace WindowsFormsApp3
 
         public static int scaleIm = 1;
         public static int curDepth = 0;
-        private bool _isChanged = false;
+        private bool _isChangedDepth = false;
         private int _initialWidth = 512, _initialHeight = 512;
         private string _colorNotSelected = "Вы не выбрали цвет!";
         private string _mode;
@@ -44,7 +44,6 @@ namespace WindowsFormsApp3
         {
             triangle.InitializeTriangle();
             square.InitializeTSquare();
-            curve.InitializeCurve();
             InitializeCombobox();
             trackBarDepth.Maximum = triangle.MaxDepthInt; // maximum depth of triangle on the trackbar            
 
@@ -62,7 +61,11 @@ namespace WindowsFormsApp3
             MaximumSize = new Size(SystemInformation.VirtualScreen.Width,
                 SystemInformation.VirtualScreen.Height);
             pictBoxStartCol.BackColor = Fractal.StartColor;
-            pictBoxEndCol.BackColor = Fractal.EndColor;            
+            pictBoxEndCol.BackColor = Fractal.EndColor;
+
+            labelMinDepth.Text = trackBarDepth.Minimum.ToString();
+            labelMinScale.Text = trackBarScale.Minimum.ToString();
+            labelMaxScale.Text = trackBarScale.Maximum.ToString();
         }
         private Bitmap NewBitmap()
         {
@@ -72,13 +75,12 @@ namespace WindowsFormsApp3
             return btm;
 
         }
-        private Bitmap NewBitmap(int zoom, PictureBox pictBox)
+        private Bitmap NewBitmap(double zoom, PictureBox pictBox)
         {
             Bitmap btm;
-            btm = new Bitmap(_initialWidth * (1 + scaleIm / zoom), _initialHeight * (1 + scaleIm / zoom));
+            btm = new Bitmap(_initialWidth * (int)(1 + scaleIm / zoom), _initialHeight * (int)(1 + scaleIm / zoom));
             pictBox.Image = btm;
             return btm;
-
         }
         private void InitializeCombobox()
         {
@@ -89,10 +91,10 @@ namespace WindowsFormsApp3
 
         private void trackBarDepth_Scroll(object sender, EventArgs e)
         {
-            if (_isChanged)
+            if (_isChangedDepth)
             {
                 trackBarDepth.Value = Fractal.DepthInt;
-                _isChanged = false;
+                _isChangedDepth = false;
             }
             TrackBarDepthChange();
         }
@@ -105,11 +107,12 @@ namespace WindowsFormsApp3
 
             if (timer.Elapsed >= new TimeSpan(0, 0, 0, 0, 700))
             {
-              /* MessageBox.Show($"Фрактал рисовался слишком долго: " +
-                    $"{String.Format("{0:0.00} c", ((float)timer.ElapsedMilliseconds) / 1000)}" +
-                    $"\nМаксимальная глубина рекурсии будет уменьшена.", "Лимит времени!");
+                MessageBox.Show($"Фрактал рисовался слишком долго: " +
+                     $"{String.Format("{0:0.00} c", ((float)timer.ElapsedMilliseconds) / 1000)}" +
+                     $"\nМаксимальная глубина рекурсии будет уменьшена.", "Лимит времени!");
                 trackBarDepth.Maximum -= 2;
-                TrackBarDepthChange();*/
+                labelMaxDepth.Text = trackBarDepth.Maximum.ToString();
+                TrackBarDepthChange();
             }
             timer.Reset();
         }
@@ -130,13 +133,14 @@ namespace WindowsFormsApp3
                     break;
                 case "С-Кривая Леви":
                     curve.CalculateInitialCoordinates(pictBoxMain.Size.Width / 3);
-                    curve.Draw(g);                                        
+                    curve.NumbColor = 0;
+                    curve.Draw(g);
                     break;
             }
         }
 
         private void TrackBarDepthChange()
-        {            
+        {
             Fractal.DepthInt = trackBarDepth.Value;
             curDepth = trackBarDepth.Value;
             labelRecur.Text = string.Format("Текущее значение глубины: {0}", trackBarDepth.Value);
@@ -177,7 +181,15 @@ namespace WindowsFormsApp3
                                 square.Draw(gSave);
                                 btmSquare2.Save(saveFile.FileName);
                                 break;
-                        }                        
+                            case "С-Кривая Леви":
+                                btmCurve2 = NewBitmap(1, pictBoxSave);
+                                gSave = Graphics.FromImage(btmCurve2);
+                                curve.CalculateInitialCoordinates(btmCurve2.Size.Width / 3);
+                                curve.NumbColor = 0;
+                                curve.Draw(gSave);
+                                btmCurve2.Save(saveFile.FileName);
+                                break;
+                        }
                         gSave.FillRectangle(new SolidBrush(DefaultBackColor),
                             0, 0, pictBoxSave.Width, pictBoxSave.Height);
 
@@ -209,10 +221,10 @@ namespace WindowsFormsApp3
                     break;
                 case "С-Кривая Леви":
                     btmCurve = NewBitmap(1, pictBoxMain);
-                    curve.iter = 0;
                     trackBarDepth.Maximum = Curve.maxDepthCurveDefault;
                     break;
             }
+            labelMaxDepth.Text = trackBarDepth.Maximum.ToString();
             pictBoxMain.Invalidate();
         }
 
@@ -224,7 +236,7 @@ namespace WindowsFormsApp3
 
         private void trackBarScale_Scroll(object sender, EventArgs e)
         {
-            labelScale.Text = String.Format("Текущее значение масштаба: {0}", trackBarScale.Value);
+            labelScale.Text = String.Format("Текущий масштаб: {0}", trackBarScale.Value);
             scaleIm = trackBarScale.Value;
             switch (_mode)
             {
@@ -238,7 +250,23 @@ namespace WindowsFormsApp3
                 case "С-Кривая Леви":
                     curve.CalculateInitialCoordinates(pictBoxMain.Size.Width / 3);
                     btmCurve = NewBitmap(1, pictBoxMain);
-                        break;
+                    break;
+            }
+            pictBoxMain.Invalidate();
+        }
+        private void PictBoxMainInvalidate()
+        {
+            switch (_mode)
+            {
+                case "Треугольник Серпинского":
+                    pictBoxMain.Image = btmTriangle;
+                    break;
+                case "Т-квадрат":
+                    pictBoxMain.Image = btmSquare;
+                    break;
+                case "С-Кривая Леви":
+                    pictBoxMain.Image = btmCurve;
+                    break;
             }
             pictBoxMain.Invalidate();
         }
@@ -249,19 +277,7 @@ namespace WindowsFormsApp3
             {
                 pictBoxStartCol.BackColor = colorDialog1.Color;
                 Fractal.StartColor = pictBoxStartCol.BackColor;
-                switch (_mode)
-                {
-                    case "Треугольник Серпинского":
-                        pictBoxMain.Image = btmTriangle;
-                        break;
-                    case "Т-квадрат":
-                        pictBoxMain.Image = btmSquare;
-                        break;
-                    case "С-Кривая Леви":
-                        pictBoxMain.Image = btmCurve;
-                        break;
-                }
-                pictBoxMain.Invalidate();
+                PictBoxMainInvalidate();
             }
             else
                 MessageBox.Show(_colorNotSelected);
@@ -273,23 +289,12 @@ namespace WindowsFormsApp3
             {
                 pictBoxEndCol.BackColor = colorDialog1.Color;
                 Fractal.EndColor = pictBoxEndCol.BackColor;
-                switch (_mode)
-                {
-                    case "Треугольник Серпинского":
-                        pictBoxMain.Image = btmTriangle;
-                        break;
-                    case "Т-квадрат":
-                        pictBoxMain.Image = btmSquare;
-                        break;
-                    case "С-Кривая Леви":
-                        pictBoxMain.Image = btmCurve;
-                        break;
-                }
-                pictBoxMain.Invalidate();
+                PictBoxMainInvalidate();
             }
             else
                 MessageBox.Show(_colorNotSelected);
         }
+
     }
 }
 

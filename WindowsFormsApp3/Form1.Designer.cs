@@ -45,6 +45,10 @@
             this.pictBoxSave = new System.Windows.Forms.PictureBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.labelMinDepth = new System.Windows.Forms.Label();
+            this.labelMaxDepth = new System.Windows.Forms.Label();
+            this.labelMinScale = new System.Windows.Forms.Label();
+            this.labelMaxScale = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             this.panel1.SuspendLayout();
@@ -80,11 +84,11 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(1042, 492);
+            this.button3.Location = new System.Drawing.Point(1055, 494);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(152, 37);
             this.button3.TabIndex = 8;
-            this.button3.Text = "Сохранить картинку";
+            this.button3.Text = "Сохранить";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.buttonSave_Click);
             // 
@@ -96,7 +100,7 @@
             this.trackBarScale.Maximum = 5;
             this.trackBarScale.Minimum = 1;
             this.trackBarScale.Name = "trackBarScale";
-            this.trackBarScale.Size = new System.Drawing.Size(230, 56);
+            this.trackBarScale.Size = new System.Drawing.Size(217, 56);
             this.trackBarScale.TabIndex = 10;
             this.trackBarScale.Value = 1;
             this.trackBarScale.Scroll += new System.EventHandler(this.trackBarScale_Scroll);
@@ -124,14 +128,14 @@
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Controls.Add(this.pictBoxMain);
             this.panel1.Location = new System.Drawing.Point(71, 24);
-            this.panel1.MinimumSize = new System.Drawing.Size(300, 350);
+            this.panel1.MinimumSize = new System.Drawing.Size(350, 300);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(602, 543);
             this.panel1.TabIndex = 16;
             // 
             // pictBoxMain
             // 
-            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Info;
+            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Control;
             this.pictBoxMain.Location = new System.Drawing.Point(50, 15);
             this.pictBoxMain.MinimumSize = new System.Drawing.Size(200, 200);
             this.pictBoxMain.Name = "pictBoxMain";
@@ -207,9 +211,9 @@
             // 
             this.pictBoxSave.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictBoxSave.Location = new System.Drawing.Point(32, 12);
+            this.pictBoxSave.Location = new System.Drawing.Point(64, 24);
             this.pictBoxSave.Name = "pictBoxSave";
-            this.pictBoxSave.Size = new System.Drawing.Size(700, 600);
+            this.pictBoxSave.Size = new System.Drawing.Size(619, 529);
             this.pictBoxSave.TabIndex = 24;
             this.pictBoxSave.TabStop = false;
             // 
@@ -236,12 +240,60 @@
             this.label1.TabIndex = 26;
             this.label1.Text = "Рисуемый фрактал";
             // 
+            // labelMinDepth
+            // 
+            this.labelMinDepth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMinDepth.AutoSize = true;
+            this.labelMinDepth.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.labelMinDepth.Location = new System.Drawing.Point(909, 216);
+            this.labelMinDepth.Name = "labelMinDepth";
+            this.labelMinDepth.Size = new System.Drawing.Size(30, 17);
+            this.labelMinDepth.TabIndex = 27;
+            this.labelMinDepth.Text = "min";
+            // 
+            // labelMaxDepth
+            // 
+            this.labelMaxDepth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMaxDepth.AutoSize = true;
+            this.labelMaxDepth.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.labelMaxDepth.Location = new System.Drawing.Point(1226, 216);
+            this.labelMaxDepth.Name = "labelMaxDepth";
+            this.labelMaxDepth.Size = new System.Drawing.Size(33, 17);
+            this.labelMaxDepth.TabIndex = 28;
+            this.labelMaxDepth.Text = "max";
+            // 
+            // labelMinScale
+            // 
+            this.labelMinScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMinScale.AutoSize = true;
+            this.labelMinScale.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.labelMinScale.Location = new System.Drawing.Point(909, 296);
+            this.labelMinScale.Name = "labelMinScale";
+            this.labelMinScale.Size = new System.Drawing.Size(30, 17);
+            this.labelMinScale.TabIndex = 29;
+            this.labelMinScale.Text = "min";
+            // 
+            // labelMaxScale
+            // 
+            this.labelMaxScale.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelMaxScale.AutoSize = true;
+            this.labelMaxScale.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.labelMaxScale.Location = new System.Drawing.Point(1093, 296);
+            this.labelMaxScale.Name = "labelMaxScale";
+            this.labelMaxScale.Size = new System.Drawing.Size(33, 17);
+            this.labelMaxScale.TabIndex = 30;
+            this.labelMaxScale.Text = "max";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1262, 617);
+            this.Controls.Add(this.labelMaxScale);
+            this.Controls.Add(this.labelMinScale);
+            this.Controls.Add(this.labelMaxDepth);
+            this.Controls.Add(this.labelMinDepth);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.panel1);
@@ -292,6 +344,10 @@
         private System.Windows.Forms.PictureBox pictBoxMain;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelMinDepth;
+        private System.Windows.Forms.Label labelMaxDepth;
+        private System.Windows.Forms.Label labelMinScale;
+        private System.Windows.Forms.Label labelMaxScale;
     }
 }
 
