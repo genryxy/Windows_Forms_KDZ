@@ -10,6 +10,7 @@ namespace WindowsFormsApp3
         private const int _correlation = 150;
 
         public static int scaleIm = 1;
+        public static int curDepth = 0;
         private bool _isChanged = false;
         private int _initialWidth = 512, _initialHeight = 512;
         private string _colorNotSelected = "Вы не выбрали цвет!";
@@ -17,9 +18,11 @@ namespace WindowsFormsApp3
 
         Bitmap btmTriangle, btmTriangle2;
         Bitmap btmSquare, btmSquare2;
-        Graphics gTr, gSq, gSave;
+        Bitmap btmCurve, btmCurve2;
+        Graphics gTr, gSq, gCur, gSave;
         Triangle triangle = new Triangle();
         Square square = new Square();
+        Curve curve = new Curve();
 
         public override System.Drawing.Size MinimumSize { get; set; }
         public override System.Drawing.Size MaximumSize { get; set; }
@@ -41,6 +44,7 @@ namespace WindowsFormsApp3
         {
             triangle.InitializeTriangle();
             square.InitializeTSquare();
+            curve.InitializeCurve();
             InitializeCombobox();
             trackBarDepth.Maximum = triangle.MaxDepthInt; // maximum depth of triangle on the trackbar            
 
@@ -48,6 +52,8 @@ namespace WindowsFormsApp3
             gTr = Graphics.FromImage(btmTriangle);
             btmSquare = NewBitmap();
             gSq = Graphics.FromImage(btmSquare);
+            btmCurve = NewBitmap();
+            gCur = Graphics.FromImage(btmCurve);
 
             _initialWidth = pictBoxMain.Width - _correlation;
             _initialHeight = pictBoxMain.Height - _correlation;
@@ -55,8 +61,8 @@ namespace WindowsFormsApp3
                 SystemInformation.VirtualScreen.Height / 2);
             MaximumSize = new Size(SystemInformation.VirtualScreen.Width,
                 SystemInformation.VirtualScreen.Height);
-            pictBoxStartCol.BackColor = triangle.StartColor;
-            pictBoxEndCol.BackColor = triangle.EndColor;
+            pictBoxStartCol.BackColor = Fractal.StartColor;
+            pictBoxEndCol.BackColor = Fractal.EndColor;            
         }
         private Bitmap NewBitmap()
         {
@@ -85,7 +91,7 @@ namespace WindowsFormsApp3
         {
             if (_isChanged)
             {
-                trackBarDepth.Value = triangle.DepthInt;
+                trackBarDepth.Value = Fractal.DepthInt;
                 _isChanged = false;
             }
             TrackBarDepthChange();
@@ -99,11 +105,11 @@ namespace WindowsFormsApp3
 
             if (timer.Elapsed >= new TimeSpan(0, 0, 0, 0, 700))
             {
-                MessageBox.Show($"Фрактал рисовался слишком долго: " +
+              /* MessageBox.Show($"Фрактал рисовался слишком долго: " +
                     $"{String.Format("{0:0.00} c", ((float)timer.ElapsedMilliseconds) / 1000)}" +
                     $"\nМаксимальная глубина рекурсии будет уменьшена.", "Лимит времени!");
                 trackBarDepth.Maximum -= 2;
-                TrackBarDepthChange();
+                TrackBarDepthChange();*/
             }
             timer.Reset();
         }
@@ -122,24 +128,18 @@ namespace WindowsFormsApp3
                     square.DrawFirstTSquare(g);
                     square.Draw(g);
                     break;
+                case "С-Кривая Леви":
+                    curve.CalculateInitialCoordinates(pictBoxMain.Size.Width / 3);
+                    curve.Draw(g);                                        
+                    break;
             }
         }
 
         private void TrackBarDepthChange()
         {            
-            triangle.DepthInt = trackBarDepth.Value;
-            square.DepthInt = trackBarDepth.Value;
-            labelRecur.Text = string.Format("Текущее значение глубины: {0}", triangle.DepthInt);
-            switch (_mode)
-            {
-                case "Треугольник Серпинского":
-                    btmSquare = NewBitmap(3, pictBoxMain);
-                    break;
-                case "Т-квадрат":
-                    square.ChangeSquareSize(scaleIm);
-                    btmSquare = NewBitmap(2, pictBoxMain);
-                    break;
-            }
+            Fractal.DepthInt = trackBarDepth.Value;
+            curDepth = trackBarDepth.Value;
+            labelRecur.Text = string.Format("Текущее значение глубины: {0}", trackBarDepth.Value);
             pictBoxMain.Invalidate();
         }
 
@@ -162,7 +162,7 @@ namespace WindowsFormsApp3
                         switch (_mode)
                         {
                             case "Треугольник Серпинского":
-                                btmTriangle2 = NewBitmap(3, pictBoxSave);
+                                btmTriangle2 = NewBitmap(2, pictBoxSave);
                                 gSave = Graphics.FromImage(btmTriangle2);
                                 triangle.CalculateInitialCoordinates();
                                 triangle.CalculatePoints();
@@ -194,13 +194,12 @@ namespace WindowsFormsApp3
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             _mode = comboBox1.SelectedItem.ToString();
-            triangle.DepthInt = trackBarDepth.Value;
-            square.DepthInt = trackBarDepth.Value;
+            Fractal.DepthInt = trackBarDepth.Value;
             square.ChangeSquareSize(scaleIm);
             switch (_mode)
             {
                 case "Треугольник Серпинского":
-                    btmSquare = NewBitmap(3, pictBoxMain);
+                    btmSquare = NewBitmap(2, pictBoxMain);
                     trackBarDepth.Maximum = Triangle.maxDepthTrDefault;
                     break;
                 case "Т-квадрат":
@@ -208,8 +207,12 @@ namespace WindowsFormsApp3
                     btmSquare = NewBitmap(2, pictBoxMain);
                     trackBarDepth.Maximum = Square.maxDepthSqDefault;
                     break;
+                case "С-Кривая Леви":
+                    btmCurve = NewBitmap(1, pictBoxMain);
+                    curve.iter = 0;
+                    trackBarDepth.Maximum = Curve.maxDepthCurveDefault;
+                    break;
             }
-
             pictBoxMain.Invalidate();
         }
 
@@ -226,12 +229,16 @@ namespace WindowsFormsApp3
             switch (_mode)
             {
                 case "Треугольник Серпинского":
-                    btmSquare = NewBitmap(3, pictBoxMain);
+                    btmSquare = NewBitmap(2, pictBoxMain);
                     break;
                 case "Т-квадрат":
                     square.ChangeSquareSize(scaleIm);
                     btmSquare = NewBitmap(2, pictBoxMain);
                     break;
+                case "С-Кривая Леви":
+                    curve.CalculateInitialCoordinates(pictBoxMain.Size.Width / 3);
+                    btmCurve = NewBitmap(1, pictBoxMain);
+                        break;
             }
             pictBoxMain.Invalidate();
         }
@@ -241,16 +248,17 @@ namespace WindowsFormsApp3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxStartCol.BackColor = colorDialog1.Color;
-                triangle.StartColor = pictBoxStartCol.BackColor;
-                square.StartColor = pictBoxStartCol.BackColor;
+                Fractal.StartColor = pictBoxStartCol.BackColor;
                 switch (_mode)
                 {
                     case "Треугольник Серпинского":
                         pictBoxMain.Image = btmTriangle;
                         break;
                     case "Т-квадрат":
-                        square.ChangeSquareSize(scaleIm);
                         pictBoxMain.Image = btmSquare;
+                        break;
+                    case "С-Кривая Леви":
+                        pictBoxMain.Image = btmCurve;
                         break;
                 }
                 pictBoxMain.Invalidate();
@@ -264,16 +272,17 @@ namespace WindowsFormsApp3
             if (colorDialog1.ShowDialog() == DialogResult.OK)
             {
                 pictBoxEndCol.BackColor = colorDialog1.Color;
-                triangle.EndColor = pictBoxEndCol.BackColor;
-                square.EndColor = pictBoxEndCol.BackColor;
+                Fractal.EndColor = pictBoxEndCol.BackColor;
                 switch (_mode)
                 {
                     case "Треугольник Серпинского":
                         pictBoxMain.Image = btmTriangle;
                         break;
                     case "Т-квадрат":
-                        square.ChangeSquareSize(scaleIm);
                         pictBoxMain.Image = btmSquare;
+                        break;
+                    case "С-Кривая Леви":
+                        pictBoxMain.Image = btmCurve;
                         break;
                 }
                 pictBoxMain.Invalidate();

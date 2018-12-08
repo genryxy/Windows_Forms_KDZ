@@ -107,7 +107,7 @@
             this.labelScale.AutoSize = true;
             this.labelScale.BackColor = System.Drawing.SystemColors.ScrollBar;
             this.labelScale.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelScale.Location = new System.Drawing.Point(950, 237);
+            this.labelScale.Location = new System.Drawing.Point(926, 237);
             this.labelScale.Name = "labelScale";
             this.labelScale.Size = new System.Drawing.Size(72, 18);
             this.labelScale.TabIndex = 12;
@@ -131,7 +131,7 @@
             // 
             // pictBoxMain
             // 
-            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Control;
+            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Info;
             this.pictBoxMain.Location = new System.Drawing.Point(50, 15);
             this.pictBoxMain.MinimumSize = new System.Drawing.Size(200, 200);
             this.pictBoxMain.Name = "pictBoxMain";

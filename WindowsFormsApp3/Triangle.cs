@@ -8,44 +8,41 @@ namespace WindowsFormsApp3
     {
         public const int maxDepthTrDefault = 12;
 
-        private int maxDepthInt = 12;
-        private float bx, cx;
-        private float ay;
-        private float bc_y;
-        private PointF top_point, right_point, left_point;
+        private int _maxDepthInt = 12;
+        private float _bx, _cx;
+        private float _ay;
+        private float _bc_y;
+        private PointF _top_point, _right_point, _left_point;
 
-        public override int DepthInt { get; set; }
-        public override int MaxDepthInt { get { return maxDepthInt; } set {maxDepthInt = value; } }
+        public override int MaxDepthInt { get { return _maxDepthInt; } set {_maxDepthInt = value; } }
         public override float SideF { get; set; }
 
         public override void Draw(Graphics g)
         {
-            DrawTriangle(g, DepthInt, top_point, left_point, right_point);
+            DrawTriangle(g, DepthInt, _top_point, _left_point, _right_point);
         }
 
         internal void InitializeTriangle()
         {
             SideF = 128f;
-            StartColor = Color.Yellow;
-            EndColor = Color.Blue;
         }
 
         internal void CalculateInitialCoordinates()
         {
-            CalculateInitialCoordinates(ref bx, ref cx, ref ay, ref bc_y);
+            CalculateInitialCoordinates(ref _bx, ref _cx, ref _ay, ref _bc_y);
         }
 
         internal void CalculatePoints()
         {
-            CalculatePoints(ref top_point, ref right_point, ref left_point);
+            CalculatePoints(ref _top_point, ref _right_point, ref _left_point);
         }
         
         private void DrawTriangle(Graphics gr, int depth, PointF top_point, PointF left_point, PointF right_point)
         {
+            Color colorCol = CountGradient.Gradient(StartColor, EndColor, DepthInt + 2, depth);
+            Brush colorBrush = new SolidBrush(colorCol);
             try
-            {
-                Color colorCol = CountGradient.Gradient(StartColor, EndColor, DepthInt + 2, depth);
-                Brush colorBrush = new SolidBrush(colorCol);
+            {               
                 if (depth == 0)
                 {
                     PointF[] points = { top_point, right_point, left_point };
@@ -82,9 +79,10 @@ namespace WindowsFormsApp3
 
         private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
         {
-            top_point = new PointF((cx + bx) / 2 * Form1.scaleIm, ay * Form1.scaleIm);
-            right_point = new PointF(bx * Form1.scaleIm, bc_y * Form1.scaleIm);
-            left_point = new PointF(cx * Form1.scaleIm, bc_y * Form1.scaleIm);
+            float coeff = 1.6f * Form1.scaleIm;
+            top_point = new PointF((_cx + _bx) / 2 * coeff, _ay * coeff);
+            right_point = new PointF(_bx * coeff, _bc_y * coeff);
+            left_point = new PointF(_cx * coeff, _bc_y * coeff);
         }
     }
 }
