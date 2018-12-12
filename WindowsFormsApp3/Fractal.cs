@@ -18,13 +18,13 @@ namespace WindowsFormsApp3
         /// </summary>
         public static Color EndColor { get; set; } = Color.Blue;
         /// <summary>
-        /// the length of a side
-        /// </summary>
-        public abstract float SideF { get; set; }
-        /// <summary>
         /// max depth of recursion
         /// </summary>
-        public virtual int MaxDepthInt { get; set; }        
+        public virtual int MaxDepthInt { get; set; }
+        /// <summary>
+        /// the length of a side
+        /// </summary>
+        public abstract float SideF { get; set; }              
         public abstract void Draw(Graphics graphics);
     }
 }

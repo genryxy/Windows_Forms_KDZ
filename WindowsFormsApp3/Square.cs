@@ -7,8 +7,8 @@ namespace WindowsFormsApp3
     class Square : Fractal
     {
         public const int maxDepthSqDefault = 10;
-        private const float _side = 128;
-        private const float _x = 64, _y = 64;
+        private const float _side = 150;
+        private const float _x = _side / 2, _y = _side / 2;
 
         private int _maxDepthInt = 10;
         private PointF _initialPoint, _initialPointNew;
@@ -35,7 +35,7 @@ namespace WindowsFormsApp3
         }
         internal void ChangeSquareSize(int scaleIm)
         {
-            SideFNew = SideF * Form1.scaleIm / 2;
+            SideFNew = SideF * Form1.scaleIm;
             _initialPointNew = new PointF(_initialPoint.X * Form1.scaleIm, _initialPoint.Y * Form1.scaleIm);
         }       
         

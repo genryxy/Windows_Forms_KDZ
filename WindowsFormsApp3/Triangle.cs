@@ -8,28 +8,22 @@ namespace WindowsFormsApp3
     {
         public const int maxDepthTrDefault = 12;
 
-        private int _maxDepthInt = 12;
         private float _bx, _cx;
         private float _ay;
         private float _bc_y;
         private PointF _top_point, _right_point, _left_point;
 
-        public override int MaxDepthInt { get { return _maxDepthInt; } set {_maxDepthInt = value; } }
-        public override float SideF { get; set; }
+        public override int MaxDepthInt { get; set; } = 12;
+        public override float SideF { get; set; } = 180F;
 
         public override void Draw(Graphics g)
         {
             DrawTriangle(g, DepthInt, _top_point, _left_point, _right_point);
         }
 
-        internal void InitializeTriangle()
+        internal void CalculateCoordinates()
         {
-            SideF = 128f;
-        }
-
-        internal void CalculateInitialCoordinates()
-        {
-            CalculateInitialCoordinates(ref _bx, ref _cx, ref _ay, ref _bc_y);
+            CalculateCoordinates(ref _bx, ref _cx, ref _ay, ref _bc_y);
         }
 
         internal void CalculatePoints()
@@ -69,7 +63,7 @@ namespace WindowsFormsApp3
             }
         }
 
-        private void CalculateInitialCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
+        private void CalculateCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
         {
             bx = 5;
             cx = bx + SideF;
@@ -79,7 +73,7 @@ namespace WindowsFormsApp3
 
         private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
         {
-            float coeff = 1.6f * Form1.scaleIm;
+            float coeff = 2 * Form1.scaleIm;
             top_point = new PointF((_cx + _bx) / 2 * coeff, _ay * coeff);
             right_point = new PointF(_bx * coeff, _bc_y * coeff);
             left_point = new PointF(_cx * coeff, _bc_y * coeff);

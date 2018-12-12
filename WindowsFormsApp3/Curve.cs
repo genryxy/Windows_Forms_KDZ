@@ -6,7 +6,7 @@ namespace WindowsFormsApp3
 {
     class Curve : Fractal
     {
-        public const int maxDepthCurveDefault = 14;
+        public const int maxDepthCurveDefault = 13;
 
         private float _x1 = 200, _y1 = 300, _x2 = 200, _y2 = 200;
 
@@ -51,8 +51,8 @@ namespace WindowsFormsApp3
         }
         private void CalculateInitialCoordinates(int size, ref float x1, ref float y1, ref float x2, ref float y2)
         {
-            x1 = 7 * size / 5 + 20 * Form1.scaleIm;
-            x2 = 7 * size / 5 + 20 * Form1.scaleIm;
+            x1 = size + 128 * Form1.scaleIm;
+            x2 = size + 128 * Form1.scaleIm;
             y2 = size;
             y1 = 2 * size;
         }       

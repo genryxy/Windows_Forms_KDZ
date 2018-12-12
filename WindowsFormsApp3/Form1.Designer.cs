@@ -30,28 +30,28 @@
         {
             this.labelRecur = new System.Windows.Forms.Label();
             this.trackBarDepth = new System.Windows.Forms.TrackBar();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonSave = new System.Windows.Forms.Button();
             this.trackBarScale = new System.Windows.Forms.TrackBar();
             this.labelScale = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel = new System.Windows.Forms.Panel();
             this.pictBoxMain = new System.Windows.Forms.PictureBox();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog = new System.Windows.Forms.ColorDialog();
             this.buttonStartCol = new System.Windows.Forms.Button();
             this.labelStartCol = new System.Windows.Forms.Label();
             this.pictBoxStartCol = new System.Windows.Forms.PictureBox();
-            this.button7 = new System.Windows.Forms.Button();
+            this.buttonEndCol = new System.Windows.Forms.Button();
             this.labelEndCol = new System.Windows.Forms.Label();
             this.pictBoxEndCol = new System.Windows.Forms.PictureBox();
             this.pictBoxSave = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox = new System.Windows.Forms.ComboBox();
+            this.labelNameFractal = new System.Windows.Forms.Label();
             this.labelMinDepth = new System.Windows.Forms.Label();
             this.labelMaxDepth = new System.Windows.Forms.Label();
             this.labelMinScale = new System.Windows.Forms.Label();
             this.labelMaxScale = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
-            this.panel1.SuspendLayout();
+            this.panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxStartCol)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxEndCol)).BeginInit();
@@ -81,16 +81,16 @@
             this.trackBarDepth.TabIndex = 7;
             this.trackBarDepth.Scroll += new System.EventHandler(this.trackBarDepth_Scroll);
             // 
-            // button3
+            // buttonSave
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(1055, 494);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(152, 37);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Сохранить";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.buttonSave_Click);
+            this.buttonSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSave.Location = new System.Drawing.Point(1055, 494);
+            this.buttonSave.Name = "buttonSave";
+            this.buttonSave.Size = new System.Drawing.Size(152, 37);
+            this.buttonSave.TabIndex = 8;
+            this.buttonSave.Text = "Сохранить";
+            this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // trackBarScale
             // 
@@ -117,25 +117,25 @@
             this.labelScale.TabIndex = 12;
             this.labelScale.Text = "Масштаб";
             // 
-            // panel1
+            // panel
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.AutoScroll = true;
-            this.panel1.BackColor = System.Drawing.SystemColors.Control;
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.pictBoxMain);
-            this.panel1.Location = new System.Drawing.Point(71, 24);
-            this.panel1.MinimumSize = new System.Drawing.Size(350, 300);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(602, 543);
-            this.panel1.TabIndex = 16;
+            this.panel.AutoScroll = true;
+            this.panel.BackColor = System.Drawing.SystemColors.Control;
+            this.panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel.Controls.Add(this.pictBoxMain);
+            this.panel.Location = new System.Drawing.Point(71, 24);
+            this.panel.MinimumSize = new System.Drawing.Size(350, 300);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(602, 543);
+            this.panel.TabIndex = 16;
             // 
             // pictBoxMain
             // 
-            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Control;
+            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Info;
             this.pictBoxMain.Location = new System.Drawing.Point(50, 15);
             this.pictBoxMain.MinimumSize = new System.Drawing.Size(200, 200);
             this.pictBoxMain.Name = "pictBoxMain";
@@ -176,16 +176,16 @@
             this.pictBoxStartCol.TabIndex = 19;
             this.pictBoxStartCol.TabStop = false;
             // 
-            // button7
+            // buttonEndCol
             // 
-            this.button7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button7.Location = new System.Drawing.Point(953, 424);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(194, 40);
-            this.button7.TabIndex = 20;
-            this.button7.Text = "Выбрать конечный цвет";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.buttonEndCol_Click);
+            this.buttonEndCol.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEndCol.Location = new System.Drawing.Point(953, 424);
+            this.buttonEndCol.Name = "buttonEndCol";
+            this.buttonEndCol.Size = new System.Drawing.Size(194, 40);
+            this.buttonEndCol.TabIndex = 20;
+            this.buttonEndCol.Text = "Выбрать конечный цвет";
+            this.buttonEndCol.UseVisualStyleBackColor = true;
+            this.buttonEndCol.Click += new System.EventHandler(this.buttonEndCol_Click);
             // 
             // labelEndCol
             // 
@@ -217,28 +217,28 @@
             this.pictBoxSave.TabIndex = 24;
             this.pictBoxSave.TabStop = false;
             // 
-            // comboBox1
+            // comboBox
             // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(939, 52);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(268, 30);
-            this.comboBox1.TabIndex = 25;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            this.comboBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox1_KeyPress);
+            this.comboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox.FormattingEnabled = true;
+            this.comboBox.Location = new System.Drawing.Point(939, 52);
+            this.comboBox.Name = "comboBox";
+            this.comboBox.Size = new System.Drawing.Size(268, 30);
+            this.comboBox.TabIndex = 25;
+            this.comboBox.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBox1_KeyPress);
             // 
-            // label1
+            // labelNameFractal
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(968, 24);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(196, 25);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Рисуемый фрактал";
+            this.labelNameFractal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.labelNameFractal.AutoSize = true;
+            this.labelNameFractal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelNameFractal.Location = new System.Drawing.Point(968, 24);
+            this.labelNameFractal.Name = "labelNameFractal";
+            this.labelNameFractal.Size = new System.Drawing.Size(196, 25);
+            this.labelNameFractal.TabIndex = 26;
+            this.labelNameFractal.Text = "Рисуемый фрактал";
             // 
             // labelMinDepth
             // 
@@ -294,18 +294,18 @@
             this.Controls.Add(this.labelMinScale);
             this.Controls.Add(this.labelMaxDepth);
             this.Controls.Add(this.labelMinDepth);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.labelNameFractal);
+            this.Controls.Add(this.comboBox);
+            this.Controls.Add(this.panel);
             this.Controls.Add(this.pictBoxEndCol);
             this.Controls.Add(this.labelEndCol);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.buttonEndCol);
             this.Controls.Add(this.pictBoxStartCol);
             this.Controls.Add(this.labelStartCol);
             this.Controls.Add(this.buttonStartCol);
             this.Controls.Add(this.labelScale);
             this.Controls.Add(this.trackBarScale);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.buttonSave);
             this.Controls.Add(this.labelRecur);
             this.Controls.Add(this.trackBarDepth);
             this.Controls.Add(this.pictBoxSave);
@@ -315,8 +315,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.panel.ResumeLayout(false);
+            this.panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxStartCol)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxEndCol)).EndInit();
@@ -329,21 +329,21 @@
         #endregion
         private System.Windows.Forms.Label labelRecur;
         private System.Windows.Forms.TrackBar trackBarDepth;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.TrackBar trackBarScale;
         private System.Windows.Forms.Label labelScale;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Panel panel;
+        private System.Windows.Forms.ColorDialog colorDialog;
         private System.Windows.Forms.Button buttonStartCol;
         private System.Windows.Forms.Label labelStartCol;
         private System.Windows.Forms.PictureBox pictBoxStartCol;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button buttonEndCol;
         private System.Windows.Forms.Label labelEndCol;
         private System.Windows.Forms.PictureBox pictBoxEndCol;
         private System.Windows.Forms.PictureBox pictBoxSave;
         private System.Windows.Forms.PictureBox pictBoxMain;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBox;
+        private System.Windows.Forms.Label labelNameFractal;
         private System.Windows.Forms.Label labelMinDepth;
         private System.Windows.Forms.Label labelMaxDepth;
         private System.Windows.Forms.Label labelMinScale;
