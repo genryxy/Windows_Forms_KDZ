@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp3
+namespace DrawingFractals
 {
     class Curve : Fractal
     {

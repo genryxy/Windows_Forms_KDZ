@@ -1,4 +1,4 @@
-﻿namespace WindowsFormsApp3
+﻿namespace DrawingFractals
 {
     partial class Form1
     {
@@ -135,7 +135,7 @@
             // 
             // pictBoxMain
             // 
-            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Info;
+            this.pictBoxMain.BackColor = System.Drawing.SystemColors.Control;
             this.pictBoxMain.Location = new System.Drawing.Point(50, 15);
             this.pictBoxMain.MinimumSize = new System.Drawing.Size(200, 200);
             this.pictBoxMain.Name = "pictBoxMain";

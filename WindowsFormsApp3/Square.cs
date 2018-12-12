@@ -2,41 +2,31 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp3
+namespace DrawingFractals
 {
     class Square : Fractal
     {
         public const int maxDepthSqDefault = 10;
         private const float _side = 150;
-        private const float _x = _side / 2, _y = _side / 2;
+        private const float _x = _side, _y = _side;
 
-        private int _maxDepthInt = 10;
-        private PointF _initialPoint, _initialPointNew;
+        private PointF _initialPoint;
 
-        public override int MaxDepthInt { get { return _maxDepthInt; } set { _maxDepthInt = value; } }
+        public override int MaxDepthInt { get; set; } = 10;
         public override float SideF { get; set; }
-        public float SideFNew { get; set; }
 
         public override void Draw(Graphics g)
         {
-            DrawTSquare(g, _initialPointNew, SideFNew, DepthInt);
+            DrawTSquare(g, _initialPoint, SideF, DepthInt);
         }
         public void DrawFirstTSquare(Graphics g)
         {
-            DrawFirstTSquare(g, _initialPointNew, SideFNew, DepthInt);
-        }
-
-        internal void InitializeTSquare()
-        {
-            SideF = _side;
-            SideFNew = SideF;
-            _initialPoint = new PointF(_x, _y);
-            _initialPointNew = new PointF(_x * Form1.scaleIm, _y * Form1.scaleIm);
+            DrawFirstTSquare(g, _initialPoint, SideF, DepthInt);
         }
         internal void ChangeSquareSize(int scaleIm)
         {
-            SideFNew = SideF * Form1.scaleIm;
-            _initialPointNew = new PointF(_initialPoint.X * Form1.scaleIm, _initialPoint.Y * Form1.scaleIm);
+            SideF = _side * Form1.scaleIm;
+            _initialPoint = new PointF(_x * Form1.scaleIm, _y * Form1.scaleIm);
         }       
         
         private int DrawTSquare(Graphics g, PointF initPoint, float sizeF, int depthInt)
@@ -86,8 +76,8 @@ namespace WindowsFormsApp3
         }
         public void DrawFirstTSquare(Graphics g, PointF initPoint, float sizeF, int depthInt)
         {
-            g.FillRectangle(new SolidBrush(StartColor), initPoint.X - SideFNew / 2,
-                initPoint.Y - SideFNew / 2, SideFNew * 2, SideFNew * 2);
+            g.FillRectangle(new SolidBrush(StartColor), initPoint.X - SideF / 2,
+                initPoint.Y - SideF / 2, SideF * 2, SideF * 2);
         }
     }
 }

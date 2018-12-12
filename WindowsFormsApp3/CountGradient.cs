@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 
-namespace WindowsFormsApp3
+namespace DrawingFractals
 {
     static class CountGradient
     {

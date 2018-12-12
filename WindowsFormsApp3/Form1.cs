@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace WindowsFormsApp3
+namespace DrawingFractals
 {
     public partial class Form1 : Form
     {
@@ -18,8 +18,8 @@ namespace WindowsFormsApp3
         private string _colorNotSelected = "Вы не выбрали цвет!";
         private string _mode;
 
-        Bitmap btmTriangle, btmSquare, btmCurve;
-        Graphics gTr, gSq, gCur, gSave;
+        Bitmap _btmTriangle, _btmSquare, _btmCurve;
+        Graphics _gTr, _gSq, _gCur, _gSave;
         Triangle triangle = new Triangle();
         Square square = new Square();
         Curve curve = new Curve();
@@ -34,26 +34,25 @@ namespace WindowsFormsApp3
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Хотите покинуть меня?",
-                "Печалька :с", MessageBoxButtons.YesNo) == DialogResult.No)
+            if (MessageBox.Show("Хотите закрыть окно?",
+                "Выход", MessageBoxButtons.YesNo) == DialogResult.No)
                 e.Cancel = true;
-
         }
 
         private void InitializeValues()
         {
             _initialWidth = pictBoxMain.Width;
             _initialHeight = pictBoxMain.Height;
-            square.InitializeTSquare();
+            square.ChangeSquareSize(scaleIm);
             InitializeCombobox();
             trackBarDepth.Maximum = triangle.MaxDepthInt; // maximum depth of triangle on the trackbar            
 
-            btmTriangle = NewBitmap(zoomTr, pictBoxMain);
-            gTr = Graphics.FromImage(btmTriangle);
-            btmSquare = NewBitmap(zoomSq, pictBoxMain);
-            gSq = Graphics.FromImage(btmSquare);
-            btmCurve = NewBitmap(zoomCur, pictBoxMain);
-            gCur = Graphics.FromImage(btmCurve);
+            _btmTriangle = NewBitmap(zoomTr, pictBoxMain);
+            _gTr = Graphics.FromImage(_btmTriangle);
+            _btmSquare = NewBitmap(zoomSq, pictBoxMain);
+            _gSq = Graphics.FromImage(_btmSquare);
+            _btmCurve = NewBitmap(zoomCur, pictBoxMain);
+            _gCur = Graphics.FromImage(_btmCurve);
            
             MinimumSize = new Size(SystemInformation.VirtualScreen.Width / 2,
                 SystemInformation.VirtualScreen.Height / 2);
@@ -62,6 +61,8 @@ namespace WindowsFormsApp3
             pictBoxStartCol.BackColor = Fractal.StartColor;
             pictBoxEndCol.BackColor = Fractal.EndColor;
 
+            labelRecur.Text = string.Format("Текущее значение глубины: {0}", trackBarDepth.Value);
+            labelScale.Text = String.Format("Текущий масштаб: {0}", trackBarScale.Value);
             labelMinDepth.Text = trackBarDepth.Minimum.ToString();
             labelMinScale.Text = trackBarScale.Minimum.ToString();
             labelMaxScale.Text = trackBarScale.Maximum.ToString();
@@ -158,28 +159,28 @@ namespace WindowsFormsApp3
                         switch (_mode)
                         {
                             case "Треугольник Серпинского":
-                                btmTriangle = NewBitmap(zoomTr, pictBoxSave);
-                                gSave = Graphics.FromImage(btmTriangle);
+                                _btmTriangle = NewBitmap(zoomTr, pictBoxSave);
+                                _gSave = Graphics.FromImage(_btmTriangle);
                                 // if don't declare it, then the triangles are superimposed on each other
-                                triangle.Draw(gSave);
-                                btmTriangle.Save(saveFile.FileName);
+                                triangle.Draw(_gSave);
+                                _btmTriangle.Save(saveFile.FileName);
                                 break;
                             case "Т-квадрат":
-                                btmSquare = NewBitmap(zoomSq, pictBoxSave);
-                                gSave = Graphics.FromImage(btmSquare);
-                                square.DrawFirstTSquare(gSave);
-                                square.Draw(gSave);
-                                btmSquare.Save(saveFile.FileName);
+                                _btmSquare = NewBitmap(zoomSq, pictBoxSave);
+                                _gSave = Graphics.FromImage(_btmSquare);
+                                square.DrawFirstTSquare(_gSave);
+                                square.Draw(_gSave);
+                                _btmSquare.Save(saveFile.FileName);
                                 break;
                             case "С-Кривая Леви":
-                                btmCurve = NewBitmap(zoomCur, pictBoxSave);
-                                gSave = Graphics.FromImage(btmCurve);
+                                _btmCurve = NewBitmap(zoomCur, pictBoxSave);
+                                _gSave = Graphics.FromImage(_btmCurve);
                                 curve.NumbColor = 0;
-                                curve.Draw(gSave);
-                                btmCurve.Save(saveFile.FileName);
+                                curve.Draw(_gSave);
+                                _btmCurve.Save(saveFile.FileName);
                                 break;
                         }
-                        gSave.FillRectangle(new SolidBrush(DefaultBackColor),
+                        _gSave.FillRectangle(new SolidBrush(DefaultBackColor),
                             0, 0, pictBoxSave.Width, pictBoxSave.Height);
 
                     }
@@ -200,16 +201,16 @@ namespace WindowsFormsApp3
             switch (_mode)
             {
                 case "Треугольник Серпинского":
-                    btmSquare = NewBitmap(zoomTr, pictBoxMain);
+                    _btmSquare = NewBitmap(zoomTr, pictBoxMain);
                     trackBarDepth.Maximum = Triangle.maxDepthTrDefault;
                     break;
                 case "Т-квадрат":
                     square.ChangeSquareSize(scaleIm);
-                    btmSquare = NewBitmap(zoomSq, pictBoxMain);
+                    _btmSquare = NewBitmap(zoomSq, pictBoxMain);
                     trackBarDepth.Maximum = Square.maxDepthSqDefault;
                     break;
                 case "С-Кривая Леви":
-                    btmCurve = NewBitmap(zoomCur, pictBoxMain);
+                    _btmCurve = NewBitmap(zoomCur, pictBoxMain);
                     trackBarDepth.Maximum = Curve.maxDepthCurveDefault;
                     break;
             }
@@ -230,15 +231,15 @@ namespace WindowsFormsApp3
             switch (_mode)
             {
                 case "Треугольник Серпинского":
-                    btmSquare = NewBitmap(zoomTr, pictBoxMain);
+                    _btmSquare = NewBitmap(zoomTr, pictBoxMain);
                     break;
                 case "Т-квадрат":
                     square.ChangeSquareSize(scaleIm);
-                    btmSquare = NewBitmap(zoomSq, pictBoxMain);
+                    _btmSquare = NewBitmap(zoomSq, pictBoxMain);
                     break;
                 case "С-Кривая Леви":
                     curve.CalculateInitialCoordinates(pictBoxMain.Size.Width / 3);
-                    btmCurve = NewBitmap(zoomCur, pictBoxMain);
+                    _btmCurve = NewBitmap(zoomCur, pictBoxMain);
                     break;
             }
             pictBoxMain.Invalidate();
@@ -253,7 +254,7 @@ namespace WindowsFormsApp3
                 pictBoxMain.Invalidate();
             }
             else
-                MessageBox.Show(_colorNotSelected);
+                MessageBox.Show(_colorNotSelected, "Внимание!");
         }
 
         private void buttonEndCol_Click(object sender, EventArgs e)
@@ -265,9 +266,8 @@ namespace WindowsFormsApp3
                 pictBoxMain.Invalidate();
             }
             else
-                MessageBox.Show(_colorNotSelected);
+                MessageBox.Show(_colorNotSelected, "Внимание!");
         }
-
     }
 }
 
