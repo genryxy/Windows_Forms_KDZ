@@ -13,27 +13,51 @@ namespace DrawingFractals
         private float _bc_y;
         private PointF _top_point, _right_point, _left_point;
 
-        public override int MaxDepthInt { get; set; } = 12;
+        /// <summary>
+        /// Maximum recursion depth
+        /// </summary>
+        public override int MaxDepthInt { get; set; } = maxDepthTrDefault;
+        /// <summary>
+        /// Triangle side length
+        /// </summary>
         public override float SideF { get; set; } = 180F;
 
+        /// <summary>
+        /// Overload of the method DrawTriangle(5 parameters)
+        /// </summary>
+        /// <param name="g"></param>
         public override void Draw(Graphics g)
         {
             DrawTriangle(g, DepthInt, _top_point, _left_point, _right_point);
         }
 
+        /// <summary>
+        /// Overload of the method CalculateCoordinates(4 parameters)
+        /// </summary>
         internal void CalculateCoordinates()
         {
             CalculateCoordinates(ref _bx, ref _cx, ref _ay, ref _bc_y);
         }
 
+        /// <summary>
+        /// Overload of the method CalculatePoints(3 parameters)
+        /// </summary>
         internal void CalculatePoints()
         {
             CalculatePoints(ref _top_point, ref _right_point, ref _left_point);
         }
-        
+
+        /// <summary>
+        /// Drawing the fractal Triangle-Sierpinski
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="depth">level of recursion</param>
+        /// <param name="top_point">coordinates of top point</param>
+        /// <param name="left_point">coordinates of left point</param>
+        /// <param name="right_point">coordinates of right point</param>
         private void DrawTriangle(Graphics gr, int depth, PointF top_point, PointF left_point, PointF right_point)
         {
-            Color colorCol = CountGradient.Gradient(StartColor, EndColor, DepthInt + 2, depth);
+            Color colorCol = SCountGradient.FormGradient(StartColor, EndColor, DepthInt + 2, depth);
             Brush colorBrush = new SolidBrush(colorCol);
             try
             {               
@@ -62,7 +86,13 @@ namespace DrawingFractals
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        /// <summary>
+        /// Calculate coordinates of the vertices of the triangle
+        /// </summary>
+        /// <param name="bx">the left vertex (abscissa)</param>
+        /// <param name="cx">the right vertex (abscissa)</param>
+        /// <param name="ay">the top vertex (ordinate)</param>
+        /// <param name="bc_y">the left and right verices (ordinates)</param>
         private void CalculateCoordinates(ref float bx, ref float cx, ref float ay, ref float bc_y)
         {
             bx = 5;
@@ -70,7 +100,12 @@ namespace DrawingFractals
             ay = 1;
             bc_y = ay + (float)Math.Sqrt(SideF * SideF - SideF * SideF / 4);
         }
-
+        /// <summary>
+        /// Form the points that are the vertices of the triangle
+        /// </summary>
+        /// <param name="top_point">the top vertex</param>
+        /// <param name="right_point">the right vertex</param>
+        /// <param name="left_point">the left vertex</param>
         private void CalculatePoints(ref PointF top_point, ref PointF right_point, ref PointF left_point)
         {
             float coeff = 2 * Form1.scaleIm;

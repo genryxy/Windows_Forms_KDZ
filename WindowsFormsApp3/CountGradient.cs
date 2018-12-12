@@ -3,9 +3,17 @@ using System.Drawing;
 
 namespace DrawingFractals
 {
-    static class CountGradient
+    static class SCountGradient
     {
-        static public Color Gradient(Color startColor, Color endColor, int size, int colorNumber)
+        /// <summary>
+        /// Creating a gradient
+        /// </summary>
+        /// <param name="startColor">the color of the first iteration</param>
+        /// <param name="endColor">the color of the last iteration</param>
+        /// <param name="size">the number of colors in the gradient</param>
+        /// <param name="colorNumber"> the number of the returned color from the gradient</param>
+        /// <returns></returns>
+        static public Color FormGradient(Color startColor, Color endColor, int size, int colorNumber)
         {
             int rMax = startColor.R;
             int rMin = endColor.R;

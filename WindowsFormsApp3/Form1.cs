@@ -201,17 +201,17 @@ namespace DrawingFractals
             switch (_mode)
             {
                 case "Треугольник Серпинского":
-                    _btmSquare = NewBitmap(zoomTr, pictBoxMain);
                     trackBarDepth.Maximum = Triangle.maxDepthTrDefault;
+                    _btmSquare = NewBitmap(zoomTr, pictBoxMain);                    
                     break;
                 case "Т-квадрат":
                     square.ChangeSquareSize(scaleIm);
-                    _btmSquare = NewBitmap(zoomSq, pictBoxMain);
                     trackBarDepth.Maximum = Square.maxDepthSqDefault;
+                    _btmSquare = NewBitmap(zoomSq, pictBoxMain);
                     break;
                 case "С-Кривая Леви":
-                    _btmCurve = NewBitmap(zoomCur, pictBoxMain);
                     trackBarDepth.Maximum = Curve.maxDepthCurveDefault;
+                    _btmCurve = NewBitmap(zoomCur, pictBoxMain);
                     break;
             }
             labelMaxDepth.Text = trackBarDepth.Maximum.ToString();

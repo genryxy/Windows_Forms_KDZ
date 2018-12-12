@@ -10,26 +10,50 @@ namespace DrawingFractals
 
         private float _x1 = 200, _y1 = 300, _x2 = 200, _y2 = 200;
 
+        /// <summary>
+        /// Maximum recursion depth
+        /// </summary>
         public override int MaxDepthInt { get; set; } = maxDepthCurveDefault;
+        /// <summary>
+        /// Curve side length
+        /// </summary>
         public override float SideF { get; set; }
+        /// <summary>
+        /// The number of the returned color from the gradient
+        /// </summary>
         public int NumbColor { get; set; } = 0;
-
+        /// <summary>
+        /// Overload of the method DrawCurve(6 parameters)
+        /// </summary>
+        /// <param name="g"></param>
         public override void Draw(Graphics g)
         {        
             DrawCurve(g, DepthInt, _x1, _y1, _x2, _y2);
         }
+        /// <summary>
+        /// Overload of the method CalculateInitialCoordinates(5 parameters)
+        /// </summary>
+        /// <param name="size"></param>
         internal void CalculateInitialCoordinates(int size)
         {
             CalculateInitialCoordinates(size, ref _x1, ref _y1, ref _x2, ref _y2);
-        }      
-
+        }
+        /// <summary>
+        /// Drawing the fractal Levy C curve
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="depth">level of recursion</param>
+        /// <param name="x1">the upper coordinate of the segment (abscissa)</param>
+        /// <param name="y1">the upper coordinate of the segment (ordinate)</param>
+        /// <param name="x2">the lower coordinate of the segment(abscissa)</param>
+        /// <param name="y2">the lower coordinate of the segment(ordinate)</param>
         private void DrawCurve(Graphics gr, int depth, float x1, float y1, float x2, float y2)
         {
             try
             {
                 if (depth == 0)
                 {
-                    gr.DrawLine(new Pen(new SolidBrush(CountGradient.Gradient
+                    gr.DrawLine(new Pen(new SolidBrush(SCountGradient.FormGradient
                         (StartColor, EndColor, (int)Math.Pow(2, Form1.curDepth), NumbColor)), 2), x1, y1, x2, y2);
                     NumbColor++;
                 }
@@ -49,6 +73,14 @@ namespace DrawingFractals
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Calculate coordinates of the segment of the curve
+        /// </summary>
+        /// <param name="size">Length of the segment</param>
+        /// <param name="x1">the upper coordinate of the segment (abscissa)</param>
+        /// <param name="y1">the upper coordinate of the segment (ordinate)</param>
+        /// <param name="x2">the lower coordinate of the segment(abscissa)</param>
+        /// <param name="y2">the lower coordinate of the segment(ordinate)</param>
         private void CalculateInitialCoordinates(int size, ref float x1, ref float y1, ref float x2, ref float y2)
         {
             x1 = size + 128 * Form1.scaleIm;
