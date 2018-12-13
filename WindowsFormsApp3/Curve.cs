@@ -49,22 +49,33 @@ namespace DrawingFractals
         /// <param name="y2">the lower coordinate of the segment(ordinate)</param>
         private void DrawCurve(Graphics gr, int depth, float x1, float y1, float x2, float y2)
         {
+            float x3, y3;
             try
             {
                 if (depth == 0)
                 {
-                    gr.DrawLine(new Pen(new SolidBrush(SCountGradient.FormGradient
+                    if (Form1.flag)
+                        gr.DrawLine(new Pen(new SolidBrush(SCountGradient.FormGradient
                         (StartColor, EndColor, (int)Math.Pow(2, Form1.curDepth), NumbColor)), 2), x1, y1, x2, y2);
+                    else
+                    {
+                        gr.DrawLine(new Pen(new SolidBrush(SCountGradient.FormGradient
+                            (StartColor, EndColor, Form1.curDepth + 1, depth)), 2), x1, y1, x2, y2);
+                        if (Form1.curDepth == 0)
+                            gr.DrawLine(new Pen(StartColor, 2), x1, y1, x2, y2);
+                    }
                     NumbColor++;
                 }
                 else
                 {                    
-                    float x3 = (x1 + x2) / 2 + (y2 - y1) / 2;
-                    float y3 = (y1 + y2) / 2 - (x2 - x1) / 2;
-
+                     x3 = (x1 + x2) / 2 + (y2 - y1) / 2;
+                     y3 = (y1 + y2) / 2 - (x2 - x1) / 2;
+                    if (!Form1.flag)                                       
+                        gr.DrawLine(new Pen(new SolidBrush(SCountGradient.FormGradient
+                        (StartColor, EndColor, Form1.curDepth * 10 + 1, depth * 10)), 2), x1, y1, x2, y2);
                     DrawCurve(gr, depth - 1, x1, y1, x3, y3);                   
-                    DrawCurve(gr, depth - 1, x3, y3, x2, y2);
-                    
+                    DrawCurve(gr, depth - 1, x3, y3, x2, y2);                    
+
                 }
             }
             catch (StackOverflowException err)

@@ -49,6 +49,7 @@
             this.labelMaxDepth = new System.Windows.Forms.Label();
             this.labelMinScale = new System.Windows.Forms.Label();
             this.labelMaxScale = new System.Windows.Forms.Label();
+            this.checkBoxCurve = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarDepth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarScale)).BeginInit();
             this.panel.SuspendLayout();
@@ -284,12 +285,28 @@
             this.labelMaxScale.TabIndex = 30;
             this.labelMaxScale.Text = "max";
             // 
+            // checkBoxCurve
+            // 
+            this.checkBoxCurve.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBoxCurve.AutoSize = true;
+            this.checkBoxCurve.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxCurve.Location = new System.Drawing.Point(1005, 103);
+            this.checkBoxCurve.Name = "checkBoxCurve";
+            this.checkBoxCurve.Size = new System.Drawing.Size(202, 21);
+            this.checkBoxCurve.TabIndex = 31;
+            this.checkBoxCurve.Text = "Красивая С-кривая Леви: ";
+            this.checkBoxCurve.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.checkBoxCurve.UseVisualStyleBackColor = true;
+            this.checkBoxCurve.Visible = false;
+            this.checkBoxCurve.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1262, 617);
+            this.Controls.Add(this.checkBoxCurve);
             this.Controls.Add(this.labelMaxScale);
             this.Controls.Add(this.labelMinScale);
             this.Controls.Add(this.labelMaxDepth);
@@ -348,6 +365,7 @@
         private System.Windows.Forms.Label labelMaxDepth;
         private System.Windows.Forms.Label labelMinScale;
         private System.Windows.Forms.Label labelMaxScale;
+        private System.Windows.Forms.CheckBox checkBoxCurve;
     }
 }
 

@@ -11,8 +11,9 @@ namespace DrawingFractals
         private const double zoomSq = 1.5;
         private const double zoomCur = 1;
 
-        public static int scaleIm = 1;
-        public static int curDepth = 0;
+        internal static bool flag = false;
+        internal static int scaleIm = 1;
+        internal static int curDepth = 0;
         private bool _isChangedDepth = false;
         private int _initialWidth, _initialHeight;
         private string _colorNotSelected = "Вы не выбрали цвет!";
@@ -140,6 +141,15 @@ namespace DrawingFractals
             pictBoxMain.Invalidate();
         }
 
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (flag)
+                flag = false;
+            else
+                flag = true;
+            pictBoxMain.Invalidate();
+        }
+
         private void buttonSave_Click(object sender, EventArgs e)
         {
             if (pictBoxMain.Image != null)
@@ -193,27 +203,39 @@ namespace DrawingFractals
             }
         }
 
+        private void NewValueDepthInt()
+        {
+            if (trackBarDepth.Value == trackBarDepth.Maximum)
+            {
+                trackBarDepth.Value = trackBarDepth.Maximum;
+                Fractal.DepthInt = trackBarDepth.Value;
+            }
+        }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             _mode = comboBox.SelectedItem.ToString();
-            Fractal.DepthInt = trackBarDepth.Value;
             square.ChangeSquareSize(scaleIm);
+            checkBoxCurve.Visible = false;
             switch (_mode)
             {
                 case "Треугольник Серпинского":
                     trackBarDepth.Maximum = Triangle.maxDepthTrDefault;
+                    NewValueDepthInt();
                     _btmSquare = NewBitmap(zoomTr, pictBoxMain);                    
                     break;
                 case "Т-квадрат":
                     square.ChangeSquareSize(scaleIm);
                     trackBarDepth.Maximum = Square.maxDepthSqDefault;
+                    NewValueDepthInt();
                     _btmSquare = NewBitmap(zoomSq, pictBoxMain);
                     break;
                 case "С-Кривая Леви":
+                    checkBoxCurve.Visible = true;
                     trackBarDepth.Maximum = Curve.maxDepthCurveDefault;
+                    NewValueDepthInt();
                     _btmCurve = NewBitmap(zoomCur, pictBoxMain);
                     break;
-            }
+            }           
             labelMaxDepth.Text = trackBarDepth.Maximum.ToString();
             pictBoxMain.Invalidate();
         }
@@ -270,7 +292,6 @@ namespace DrawingFractals
         }
     }
 }
-
 // загрузка изображений
 /*using (OpenFileDialog openFile = new OpenFileDialog() { Multiselect = false, ValidateNames = true, Filter = "JPEG|*.jpg" })
         {
